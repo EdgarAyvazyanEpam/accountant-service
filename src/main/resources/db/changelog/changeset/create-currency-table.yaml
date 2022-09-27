@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-currency
+      author: Edgar
+      changes:
+        - createTable:
+            tableName: currency
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: currency_date
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rate
+                  type: DOUBLE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: iso_code_from
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: iso_code_to
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creation_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false

@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-employee
+      author: Edgar
+      changes:
+        - createTable:
+            tableName: employee
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: salary
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creation_date
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
