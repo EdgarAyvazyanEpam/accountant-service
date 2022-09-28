@@ -3,9 +3,9 @@ package com.accountant.service.accountant.controller;
 import com.accountant.service.accountant.csv.csvservice.CSVService;
 import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import com.accountant.service.accountant.csv.helper.CSVCurrencyHelper;
-import com.accountant.service.accountant.csv.helper.CSVEmployeeHelper;
+import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.entity.CurrencyEntity;
-import com.accountant.service.accountant.entity.EmployeeEntity;
+import com.accountant.service.accountant.service.CurrencyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +16,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/csv")
 public class CurrencyController {
-    private final CSVService csvService;
+    private final CurrencyService currencyService;
 
-    public CurrencyController(CSVService csvService) {
-        this.csvService = csvService;
+    public CurrencyController(CurrencyService currencyService) {
+        this.currencyService = currencyService;
     }
 
     @PostMapping("/upload-currency")
@@ -28,8 +28,7 @@ public class CurrencyController {
 
         if (CSVCurrencyHelper.hasCSVFormat(file)) {
             try {
-                csvService.saveCurrency(file);
-
+                currencyService.saveCurrency(file);
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
             } catch (Exception e) {
@@ -43,9 +42,9 @@ public class CurrencyController {
     }
 
     @GetMapping("/currencies")
-    public ResponseEntity<List<CurrencyEntity>> getAllCurrencies() {
+    public ResponseEntity<List<CurrencyDTO>> getAllCurrencies() {
         try {
-            List<CurrencyEntity> currencyEntities = csvService.getAllCurrencies();
+            List<CurrencyDTO> currencyEntities = currencyService.getAllCurrencies();
 
             if (currencyEntities.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

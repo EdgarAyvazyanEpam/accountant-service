@@ -3,7 +3,9 @@ package com.accountant.service.accountant.controller;
 import com.accountant.service.accountant.csv.csvservice.CSVService;
 import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import com.accountant.service.accountant.csv.helper.CSVEmployeeHelper;
+import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.entity.EmployeeEntity;
+import com.accountant.service.accountant.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +17,10 @@ import java.util.List;
 @RestController
 @RequestMapping("api/csv")
 public class EmployeeController {
-    private final CSVService csvService;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(CSVService csvService) {
-        this.csvService = csvService;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @PostMapping("/upload-employee")
@@ -27,7 +29,7 @@ public class EmployeeController {
 
         if (CSVEmployeeHelper.hasCSVFormat(file)) {
             try {
-                csvService.saveEmployee(file);
+                employeeService.saveEmployee(file);
 
                 message = "Uploaded the file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -42,9 +44,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/employees")
-    public ResponseEntity<List<EmployeeEntity>> getAllEmployees() {
+    public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
         try {
-            List<EmployeeEntity> employees = csvService.getAllEmployees();
+            List<EmployeeDTO> employees = employeeService.getAllEmployees();
 
             if (employees.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

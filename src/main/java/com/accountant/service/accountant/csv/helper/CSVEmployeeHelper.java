@@ -1,5 +1,6 @@
 package com.accountant.service.accountant.csv.helper;
 
+import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.entity.EmployeeEntity;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -25,26 +26,26 @@ public class CSVEmployeeHelper {
     }
 
 
-    public static List<EmployeeEntity> csvToEmployees(InputStream is, String fileName) {
+    public static List<EmployeeDTO> csvToEmployees(InputStream is, String fileName) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
 
-            List<EmployeeEntity> employeeEntities = new ArrayList<>();
+            List<EmployeeDTO> employeeDTOS = new ArrayList<>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
             for (CSVRecord csvRecord : csvRecords) {
-                EmployeeEntity employee = new EmployeeEntity(null,
+                EmployeeDTO dto = new EmployeeDTO(null,
                         csvRecord.get("Employee"),
                         BigDecimal.valueOf(Long.parseLong(csvRecord.get("Salary"))),
                         new Date(), fileName
                 );
 
-                employeeEntities.add(employee);
+                employeeDTOS.add(dto);
             }
 
-            return employeeEntities;
+            return employeeDTOS;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
         }

@@ -1,5 +1,6 @@
 package com.accountant.service.accountant.csv.helper;
 
+import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.entity.CurrencyEntity;
 import com.accountant.service.accountant.entity.EmployeeEntity;
 import com.accountant.service.accountant.enums.IsoCodeEnum;
@@ -27,17 +28,17 @@ public class CSVCurrencyHelper {
     }
 
 
-    public static List<CurrencyEntity> csvToEmployees(InputStream is, String fileName) {
+    public static List<CurrencyDTO> csvToEmployees(InputStream is, String fileName) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
 
-            List<CurrencyEntity> currencyEntities = new ArrayList<>();
+            List<CurrencyDTO> currencyDTOS = new ArrayList<>();
 
             Iterable<CSVRecord> csvRecords = csvParser.getRecords();
 
             for (CSVRecord csvRecord : csvRecords) {
-                CurrencyEntity currency = new CurrencyEntity(null,
+                CurrencyDTO currency = new CurrencyDTO(null,
                         csvRecord.get("Date"),
                         csvRecord.get("Rate"),
                         IsoCodeEnum.valueOf(csvRecord.get("ISO Code From")),
@@ -45,10 +46,10 @@ public class CSVCurrencyHelper {
                         new Date(), fileName
                 );
 
-                currencyEntities.add(currency);
+                currencyDTOS.add(currency);
             }
 
-            return currencyEntities;
+            return currencyDTOS;
         } catch (IOException e) {
             throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
         }
