@@ -43,3 +43,8 @@ databaseChangeLog:
                   type: varchar(200)
                   constraints:
                     nullable: false
+              - column:
+                  name: file_id
+                  type: varchar(200)
+                  constraints:
+                    nullable: false

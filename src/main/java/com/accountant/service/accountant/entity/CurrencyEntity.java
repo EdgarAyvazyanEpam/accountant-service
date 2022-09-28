@@ -27,17 +27,20 @@ public class CurrencyEntity {
     private IsoCodeEnum isoCodeTo;
 
     @Column(name = "creation_date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
     @Column(name = "file_name")
     private String fileName;
 
+    @Column(name = "file_id")
+    private String fileId;
+
     public CurrencyEntity() {
     }
 
     public CurrencyEntity(Long id, String currencyDate, String rate, IsoCodeEnum isoCodeFrom,
-                          IsoCodeEnum isoCodeTo, Date creationDate, String fileName) {
+                          IsoCodeEnum isoCodeTo, Date creationDate, String fileName, String fileId) {
         this.id = id;
         this.currencyDate = currencyDate;
         this.rate = rate;
@@ -45,6 +48,7 @@ public class CurrencyEntity {
         this.isoCodeTo = isoCodeTo;
         this.creationDate = creationDate;
         this.fileName = fileName;
+        this.fileId = fileId;
     }
 
     public Long getId() {
@@ -101,5 +105,13 @@ public class CurrencyEntity {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
     }
 }

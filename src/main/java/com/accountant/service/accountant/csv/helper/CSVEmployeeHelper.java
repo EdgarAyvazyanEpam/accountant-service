@@ -26,7 +26,7 @@ public class CSVEmployeeHelper {
     }
 
 
-    public static List<EmployeeDTO> csvToEmployees(InputStream is, String fileName) {
+    public static List<EmployeeDTO> csvToEmployees(InputStream is, String fileName, Long uploadedFileId) {
         try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
              CSVParser csvParser = new CSVParser(fileReader,
                      CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
@@ -39,7 +39,7 @@ public class CSVEmployeeHelper {
                 EmployeeDTO dto = new EmployeeDTO(null,
                         csvRecord.get("Employee"),
                         BigDecimal.valueOf(Long.parseLong(csvRecord.get("Salary"))),
-                        new Date(), fileName
+                        new Date(), fileName, String.valueOf(uploadedFileId)
                 );
 
                 employeeDTOS.add(dto);

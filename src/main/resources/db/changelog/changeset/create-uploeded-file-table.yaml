@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-employee
+      id: create-uploaded-file
       author: Edgar
       changes:
         - createTable:
-            tableName: employee
+            tableName: uploaded_file
             columns:
               - column:
                   name: id
@@ -14,27 +14,17 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: full_name
-                  type: varchar(200)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: salary
-                  type: bigint
-                  constraints:
-                    nullable: false
-              - column:
-                  name: creation_date
-                  type: DATETIME
-                  constraints:
-                    nullable: false
-              - column:
                   name: file_name
                   type: varchar(200)
                   constraints:
                     nullable: false
               - column:
-                  name: file_id
-                  type: varchar(200)
+                  name: file_content
+                  type: CLOB
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creation_date
+                  type: DATETIME
                   constraints:
                     nullable: false

@@ -18,4 +18,5 @@ public class CurrencyDTO {
     private IsoCodeEnum isoCodeTo;
     private Date creationDate;
     private String fileName;
+    private String fileId;
 }

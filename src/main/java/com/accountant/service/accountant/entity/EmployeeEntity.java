@@ -15,20 +15,23 @@ public class EmployeeEntity {
     @Column(name = "salary")
     private BigDecimal salary;
     @Column(name = "creation_date")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
     @Column(name = "file_name")
     private String fileName;
+    @Column(name = "file_id")
+    private String fileId;
 
     public EmployeeEntity() {
     }
 
-    public EmployeeEntity(Long id, String fullName, BigDecimal salary, Date creationDate, String fileName) {
+    public EmployeeEntity(Long id, String fullName, BigDecimal salary, Date creationDate, String fileName, String fileId) {
         this.id = id;
         this.fullName = fullName;
         this.salary = salary;
         this.creationDate = creationDate;
         this.fileName = fileName;
+        this.fileId = fileId;
     }
 
     public Long getId() {
@@ -69,6 +72,14 @@ public class EmployeeEntity {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
     }
 }
 
