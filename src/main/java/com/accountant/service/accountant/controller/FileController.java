@@ -2,6 +2,7 @@ package com.accountant.service.accountant.controller;
 
 import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import com.accountant.service.accountant.repository.UploadedFileRepository;
+import com.accountant.service.accountant.service.interfaces.UploadedService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/csv/file")
 public class FileController {
-    private final UploadedFileRepository uploadedFileRepository;
+    private final UploadedService uploadedService;
 
-    public FileController(UploadedFileRepository uploadedFileRepository) {
-        this.uploadedFileRepository = uploadedFileRepository;
+    public FileController(UploadedFileRepository uploadedFileRepository, UploadedService uploadedService) {
+        this.uploadedService = uploadedService;
     }
 
     @DeleteMapping(value = "/delete-currency")
@@ -24,7 +25,7 @@ public class FileController {
         String message = "";
         if (fileName.contains("History")) {
             try {
-                Integer id = uploadedFileRepository.deleteCurrencyFileByName(fileName);
+                Integer id = uploadedService.deleteCurrencyFileByName(fileName);
                 if (id > 0) {
                     message = "File deleted successfully by name: " + fileName;
                     return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
@@ -44,7 +45,7 @@ public class FileController {
         String message = "";
         if (fileName.contains("Employee")) {
             try {
-                Integer id = uploadedFileRepository.deleteEmployeeFileByName(fileName);
+                Integer id = uploadedService.deleteEmployeeFileByName(fileName);
                 if (id > 0) {
                     message = "File deleted successfully by name: " + fileName;
                     return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));

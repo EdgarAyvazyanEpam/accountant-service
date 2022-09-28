@@ -13,9 +13,11 @@ import java.util.Date;
 @Service
 public class UploadedFileService implements UploadedService {
 
+    private final UploadedFileRepository uploadedFileRepository;
     private final UploadedFileRepository fileRepository;
 
-    public UploadedFileService(UploadedFileRepository fileRepository) {
+    public UploadedFileService(UploadedFileRepository uploadedFileRepository, UploadedFileRepository fileRepository) {
+        this.uploadedFileRepository = uploadedFileRepository;
         this.fileRepository = fileRepository;
     }
 
@@ -27,5 +29,15 @@ public class UploadedFileService implements UploadedService {
         } catch (IOException e) {
             throw new RuntimeException("fail to store file data: " + e.getMessage());
         }
+    }
+
+    @Override
+    public Integer deleteCurrencyFileByName(String fileName) {
+        return uploadedFileRepository.deleteCurrencyFileByName(fileName);
+    }
+
+    @Override
+    public Integer deleteEmployeeFileByName(String fileName) {
+        return uploadedFileRepository.deleteEmployeeFileByName(fileName);
     }
 }

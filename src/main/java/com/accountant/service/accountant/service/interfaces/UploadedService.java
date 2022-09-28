@@ -5,4 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UploadedService {
     UploadedFileEntity saveUploadedFile(MultipartFile file);
+    Integer deleteCurrencyFileByName(String fileName);
+    Integer deleteEmployeeFileByName(String fileName);
 }
