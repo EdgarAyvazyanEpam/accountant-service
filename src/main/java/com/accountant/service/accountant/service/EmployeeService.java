@@ -1,9 +1,7 @@
 package com.accountant.service.accountant.service;
 
 import com.accountant.service.accountant.csv.csvservice.CSVService;
-import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.domain.EmployeeDTO;
-import com.accountant.service.accountant.entity.CurrencyEntity;
 import com.accountant.service.accountant.entity.EmployeeEntity;
 import com.accountant.service.accountant.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;

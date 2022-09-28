@@ -5,8 +5,6 @@ import com.accountant.service.accountant.csv.helper.CSVEmployeeHelper;
 import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.entity.UploadedFileEntity;
-import com.accountant.service.accountant.repository.CurrencyRepository;
-import com.accountant.service.accountant.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

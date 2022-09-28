@@ -1,7 +1,6 @@
 package com.accountant.service.accountant.csv.helper;
 
 import com.accountant.service.accountant.domain.EmployeeDTO;
-import com.accountant.service.accountant.entity.EmployeeEntity;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;

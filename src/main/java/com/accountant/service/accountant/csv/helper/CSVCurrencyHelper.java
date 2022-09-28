@@ -1,7 +1,6 @@
 package com.accountant.service.accountant.csv.helper;
 
 import com.accountant.service.accountant.domain.CurrencyDTO;
-import com.accountant.service.accountant.entity.UploadedFileEntity;
 import com.accountant.service.accountant.enums.IsoCodeEnum;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;

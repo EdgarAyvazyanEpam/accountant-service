@@ -3,8 +3,6 @@ package com.accountant.service.accountant.controller;
 import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import com.accountant.service.accountant.csv.helper.CSVCurrencyHelper;
 import com.accountant.service.accountant.domain.CurrencyDTO;
-import com.accountant.service.accountant.repository.CurrencyRepository;
-import com.accountant.service.accountant.repository.UploadedFileRepository;
 import com.accountant.service.accountant.service.CurrencyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
