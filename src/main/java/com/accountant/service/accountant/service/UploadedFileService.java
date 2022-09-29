@@ -1,43 +1,49 @@
 package com.accountant.service.accountant.service;
 
 import com.accountant.service.accountant.entity.UploadedFileEntity;
+import com.accountant.service.accountant.repository.CurrencyRepository;
+import com.accountant.service.accountant.repository.EmployeeRepository;
 import com.accountant.service.accountant.repository.UploadedFileRepository;
 import com.accountant.service.accountant.service.interfaces.UploadedService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 
 @Service
 public class UploadedFileService implements UploadedService {
 
     private final UploadedFileRepository uploadedFileRepository;
-    private final UploadedFileRepository fileRepository;
+    private final CurrencyRepository currencyRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public UploadedFileService(UploadedFileRepository uploadedFileRepository, UploadedFileRepository fileRepository) {
+    public UploadedFileService(UploadedFileRepository uploadedFileRepository, UploadedFileRepository fileRepository, CurrencyRepository currencyRepository, EmployeeRepository employeeRepository) {
         this.uploadedFileRepository = uploadedFileRepository;
-        this.fileRepository = fileRepository;
+        this.currencyRepository = currencyRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public UploadedFileEntity saveUploadedFile(MultipartFile file) {
         try {
-            UploadedFileEntity entity = new UploadedFileEntity(file.getOriginalFilename(), Arrays.toString(file.getBytes()), new Date());
-            return fileRepository.save(entity);
+            UploadedFileEntity entity = new UploadedFileEntity(file.getOriginalFilename(), Arrays.toString(file.getBytes()), LocalDateTime.now());
+            return uploadedFileRepository.save(entity);
         } catch (IOException e) {
             throw new RuntimeException("fail to store file data: " + e.getMessage());
         }
     }
 
     @Override
-    public Integer deleteCurrencyFileByName(String fileName) {
-        return uploadedFileRepository.deleteCurrencyFileByName(fileName);
+    public Long deleteCurrencyFileById(Long id) {
+        Long isDeleted = uploadedFileRepository.deleteUploadedFileEntityById(id);
+        return currencyRepository.deleteByFileId(String.valueOf(id));
     }
 
     @Override
-    public Integer deleteEmployeeFileByName(String fileName) {
-        return uploadedFileRepository.deleteEmployeeFileByName(fileName);
+    public Long deleteEmployeeFileById(Long id) {
+        uploadedFileRepository.deleteUploadedFileEntityById(id);
+        return employeeRepository.deleteByFileId(String.valueOf(id));
     }
 }

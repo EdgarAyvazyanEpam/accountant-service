@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -16,7 +17,7 @@ public class CurrencyDTO {
     private String rate;
     private IsoCodeEnum isoCodeFrom;
     private IsoCodeEnum isoCodeTo;
-    private Date creationDate;
+    private LocalDateTime creationDate;
     private String fileName;
     private String fileId;
 }

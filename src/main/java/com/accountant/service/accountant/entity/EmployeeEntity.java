@@ -2,21 +2,21 @@ package com.accountant.service.accountant.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employee")
 public class EmployeeEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @Column(name = "full_name")
     private String fullName;
     @Column(name = "salary")
     private BigDecimal salary;
     @Column(name = "creation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private LocalDateTime creationDate;
     @Column(name = "file_name")
     private String fileName;
     @Column(name = "file_id")
@@ -25,7 +25,8 @@ public class EmployeeEntity {
     public EmployeeEntity() {
     }
 
-    public EmployeeEntity(Long id, String fullName, BigDecimal salary, Date creationDate, String fileName, String fileId) {
+    public EmployeeEntity(Long id, String fullName, BigDecimal salary,
+                          LocalDateTime creationDate, String fileName, String fileId) {
         this.id = id;
         this.fullName = fullName;
         this.salary = salary;
@@ -58,11 +59,11 @@ public class EmployeeEntity {
         this.salary = salary;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

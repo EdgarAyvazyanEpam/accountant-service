@@ -1,4 +1,4 @@
-package com.accountant.service.accountant.csv.exception;
+package com.accountant.service.accountant.exception;
 
 import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import org.springframework.http.HttpStatus;
@@ -14,4 +14,6 @@ public class FileUploadExceptionAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity handleMaxSizeException(MaxUploadSizeExceededException exc) {
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage("File too large!"));
     }
+
+
 }

@@ -63,6 +63,7 @@ public class EmployeeService implements com.accountant.service.accountant.servic
         dto.setSalary(entity.getSalary());
         dto.setCreationDate(entity.getCreationDate());
         dto.setFileName(entity.getFileName());
+        dto.setFileId(entity.getFileId());
 
         return dto;
     }

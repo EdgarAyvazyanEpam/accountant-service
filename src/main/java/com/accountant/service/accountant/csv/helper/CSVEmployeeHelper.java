@@ -12,8 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class CSVEmployeeHelper {
@@ -38,7 +38,7 @@ public class CSVEmployeeHelper {
                 EmployeeDTO dto = new EmployeeDTO(null,
                         csvRecord.get("Employee"),
                         BigDecimal.valueOf(Long.parseLong(csvRecord.get("Salary"))),
-                        new Date(), fileName, String.valueOf(uploadedFileId)
+                        LocalDateTime.now(), fileName, String.valueOf(uploadedFileId)
                 );
 
                 employeeDTOS.add(dto);

@@ -2,9 +2,12 @@ package com.accountant.service.accountant.csv.helper;
 
 import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.enums.IsoCodeEnum;
+import com.accountant.service.accountant.exception.CSVCurrencyFileParseException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -12,11 +15,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class CSVCurrencyHelper {
+    private static final Logger logger = LoggerFactory.getLogger(CSVCurrencyHelper.class);
     public static String TYPE = "text/csv";
 
     public static boolean hasCSVFormat(MultipartFile file) {
@@ -36,19 +40,21 @@ public class CSVCurrencyHelper {
 
             for (CSVRecord csvRecord : csvRecords) {
                 CurrencyDTO currency = new CurrencyDTO(null,
-                        csvRecord.get("Date"),
+                        csvRecord.get("fsdf"),
                         csvRecord.get("Rate"),
                         IsoCodeEnum.valueOf(csvRecord.get("ISO Code From")),
                         IsoCodeEnum.valueOf(csvRecord.get("ISO Code To")),
-                        new Date(), fileName, String.valueOf(uploadedFileId)
+                        LocalDateTime.now(), fileName, String.valueOf(uploadedFileId)
                 );
 
                 currencyDTOS.add(currency);
             }
 
             return currencyDTOS;
-        } catch (IOException e) {
-            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
+        } catch (IOException | RuntimeException e) {
+            String message = "Fail to parse CSV file";
+            logger.error(message, e);
+            throw new CSVCurrencyFileParseException(message);
         }
     }
 }

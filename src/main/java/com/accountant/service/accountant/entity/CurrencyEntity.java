@@ -3,13 +3,14 @@ package com.accountant.service.accountant.entity;
 import com.accountant.service.accountant.enums.IsoCodeEnum;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "currency")
 public class CurrencyEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "currency_date")
@@ -27,8 +28,7 @@ public class CurrencyEntity {
     private IsoCodeEnum isoCodeTo;
 
     @Column(name = "creation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     @Column(name = "file_name")
     private String fileName;
@@ -40,7 +40,7 @@ public class CurrencyEntity {
     }
 
     public CurrencyEntity(Long id, String currencyDate, String rate, IsoCodeEnum isoCodeFrom,
-                          IsoCodeEnum isoCodeTo, Date creationDate, String fileName, String fileId) {
+                          IsoCodeEnum isoCodeTo, LocalDateTime creationDate, String fileName, String fileId) {
         this.id = id;
         this.currencyDate = currencyDate;
         this.rate = rate;
@@ -91,11 +91,11 @@ public class CurrencyEntity {
         this.isoCodeTo = isoCodeTo;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 

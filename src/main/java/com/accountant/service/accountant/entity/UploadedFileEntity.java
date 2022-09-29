@@ -1,26 +1,26 @@
 package com.accountant.service.accountant.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "uploaded_file")
 public class UploadedFileEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @Column(name = "file_name")
     private String fileName;
     @Column(name = "file_content", columnDefinition = "text")
     private String fileContent;
     @Column(name = "creation_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date creationDate;
+    private LocalDateTime creationDate;
 
     public UploadedFileEntity() {
     }
 
-    public UploadedFileEntity(String fileName, String fileContent, Date creationDate) {
+    public UploadedFileEntity(String fileName, String fileContent, LocalDateTime creationDate) {
         this.fileName = fileName;
         this.fileContent = fileContent;
         this.creationDate = creationDate;
@@ -50,11 +50,11 @@ public class UploadedFileEntity {
         this.fileContent = fileContent;
     }
 
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 }
