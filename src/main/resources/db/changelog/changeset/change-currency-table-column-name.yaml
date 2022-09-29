@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: change column name
+      author: Edgar
+      changes:
+        - addColumn:
+           tableName: currency
+           columns:
+               - column:
+                     name: currency_day
+                     type: varchar(200)
+                     constraints:
+                         nullable: false

@@ -16,6 +16,9 @@ public class CurrencyEntity {
     @Column(name = "currency_date")
     private String currencyDate;
 
+    @Column(name = "currency_day")
+    private String currencyDay;
+
     @Column(name = "rate")
     private String rate;
 
@@ -39,10 +42,12 @@ public class CurrencyEntity {
     public CurrencyEntity() {
     }
 
-    public CurrencyEntity(Long id, String currencyDate, String rate, IsoCodeEnum isoCodeFrom,
-                          IsoCodeEnum isoCodeTo, LocalDateTime creationDate, String fileName, String fileId) {
+    public CurrencyEntity(Long id, String currencyDate, String currencyDay, String rate,
+                          IsoCodeEnum isoCodeFrom, IsoCodeEnum isoCodeTo, LocalDateTime creationDate,
+                          String fileName, String fileId) {
         this.id = id;
         this.currencyDate = currencyDate;
+        this.currencyDay = currencyDay;
         this.rate = rate;
         this.isoCodeFrom = isoCodeFrom;
         this.isoCodeTo = isoCodeTo;
@@ -113,5 +118,13 @@ public class CurrencyEntity {
 
     public void setFileId(String fileId) {
         this.fileId = fileId;
+    }
+
+    public String getCurrencyDay() {
+        return currencyDay;
+    }
+
+    public void setCurrencyDay(String currencyDay) {
+        this.currencyDay = currencyDay;
     }
 }

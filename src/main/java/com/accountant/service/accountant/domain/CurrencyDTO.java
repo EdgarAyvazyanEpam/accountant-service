@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -14,6 +13,7 @@ import java.util.Date;
 public class CurrencyDTO {
     private Long id;
     private String currencyDate;
+    private String currencyDay;
     private String rate;
     private IsoCodeEnum isoCodeFrom;
     private IsoCodeEnum isoCodeTo;

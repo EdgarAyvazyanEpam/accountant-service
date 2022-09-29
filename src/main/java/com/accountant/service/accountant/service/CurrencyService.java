@@ -62,7 +62,7 @@ public class CurrencyService implements com.accountant.service.accountant.servic
 
     private CurrencyEntity currencyDtoToCurrencyEntity(CurrencyDTO dto) {
 
-        return new CurrencyEntity(dto.getId(), dto.getCurrencyDate(),
+        return new CurrencyEntity(dto.getId(), dto.getCurrencyDate(), dto.getCurrencyDay(),
                 dto.getRate(), dto.getIsoCodeFrom(), dto.getIsoCodeTo(), dto.getCreationDate(),
                 dto.getFileName(), dto.getFileId());
     }
@@ -79,6 +79,7 @@ public class CurrencyService implements com.accountant.service.accountant.servic
         CurrencyDTO dto = new CurrencyDTO();
         dto.setId(entity.getId());
         dto.setCurrencyDate(entity.getCurrencyDate());
+        dto.setCurrencyDay(entity.getCurrencyDay());
         dto.setRate(entity.getRate());
         dto.setIsoCodeFrom(entity.getIsoCodeFrom());
         dto.setIsoCodeTo(entity.getIsoCodeTo());
