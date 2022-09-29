@@ -1,9 +1,12 @@
 package com.accountant.service.accountant.csv.helper;
 
 import com.accountant.service.accountant.domain.EmployeeDTO;
+import com.accountant.service.accountant.exception.employee.CSVEmployeeFileParseException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVEmployeeHelper {
+    private static final Logger logger = LoggerFactory.getLogger(CSVEmployeeHelper.class);
     public static String TYPE = "text/csv";
 
     public static boolean hasCSVFormat(MultipartFile file) {
@@ -45,8 +49,10 @@ public class CSVEmployeeHelper {
             }
 
             return employeeDTOS;
-        } catch (IOException e) {
-            throw new RuntimeException("fail to parse CSV file: " + e.getMessage());
+        } catch (IOException | RuntimeException e) {
+            String message = "Fail to parse CSV file";
+            logger.error(message, e);
+            throw new CSVEmployeeFileParseException(message);
         }
     }
 }

@@ -1,12 +1,11 @@
 package com.accountant.service.accountant.service;
 
 import com.accountant.service.accountant.csv.csvservice.CSVService;
-import com.accountant.service.accountant.csv.helper.CSVCurrencyHelper;
 import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.entity.CurrencyEntity;
-import com.accountant.service.accountant.exception.CSVCurrencyFileParseException;
-import com.accountant.service.accountant.exception.CSVCurrencyFileStoreException;
-import com.accountant.service.accountant.exception.CurrencyNotFoundException;
+import com.accountant.service.accountant.exception.currency.CSVCurrencyFileParseException;
+import com.accountant.service.accountant.exception.currency.CSVCurrencyFileStoreException;
+import com.accountant.service.accountant.exception.currency.CurrencyNotFoundException;
 import com.accountant.service.accountant.repository.CurrencyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,7 @@ public class CurrencyService implements com.accountant.service.accountant.servic
     private final UploadedFileService uploadedFileService;
     private final CurrencyRepository currencyRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(CSVCurrencyHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(CurrencyService.class);
 
     public CurrencyService(CSVService csvService, UploadedFileService uploadedFileService, CurrencyRepository currencyRepository) {
         this.csvService = csvService;
@@ -32,7 +31,7 @@ public class CurrencyService implements com.accountant.service.accountant.servic
 
     @Override
     public void saveCurrency(MultipartFile file) {
-        List<CurrencyDTO> currencyDTOS = null;
+        List<CurrencyDTO> currencyDTOS ;
         try {
             currencyDTOS = csvService.createCurrencyDtos(file, uploadedFileService.saveUploadedFile(file));
             currencyRepository.saveAll(currencyDtosToCurrencyEntities(currencyDTOS));

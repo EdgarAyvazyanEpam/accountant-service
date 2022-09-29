@@ -3,7 +3,12 @@ package com.accountant.service.accountant.service;
 import com.accountant.service.accountant.csv.csvservice.CSVService;
 import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.entity.EmployeeEntity;
+import com.accountant.service.accountant.exception.employee.CSVEmployeeFileParseException;
+import com.accountant.service.accountant.exception.employee.CSVEmployeeFileStoreException;
+import com.accountant.service.accountant.exception.employee.EmployeeNotFoundException;
 import com.accountant.service.accountant.repository.EmployeeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +20,7 @@ public class EmployeeService implements com.accountant.service.accountant.servic
     private final CSVService csvService;
     private final UploadedFileService uploadedFileService;
     private final EmployeeRepository employeeRepository;
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
     public EmployeeService(CSVService csvService, UploadedFileService uploadedFileService, EmployeeRepository employeeRepository) {
         this.csvService = csvService;
@@ -24,13 +30,25 @@ public class EmployeeService implements com.accountant.service.accountant.servic
 
     @Override
     public void saveEmployee(MultipartFile file) {
-        List<EmployeeDTO> employeeDTOS = csvService.saveEmployee(file, uploadedFileService.saveUploadedFile(file));
-        employeeRepository.saveAll(employeeDtosToEmployeeEntities(employeeDTOS));
+        List<EmployeeDTO> employeeDTOS ;
+        try {
+            employeeDTOS = csvService.createEmployeeDtos(file, uploadedFileService.saveUploadedFile(file));
+            employeeRepository.saveAll(employeeDtosToEmployeeEntities(employeeDTOS));
+        } catch (CSVEmployeeFileParseException e) {
+            String message = "Fail to store CSV file:";
+            logger.error(message, e);
+            throw new CSVEmployeeFileStoreException(message);
+        }
     }
 
     @Override
     public List<EmployeeDTO> getAllEmployees() {
-        return employeeEntitiesToEmployeeDtos(employeeRepository.findAll());
+        List<EmployeeEntity> all = employeeRepository.findAll();
+        if (all.isEmpty()) {
+            throw new EmployeeNotFoundException("No employee data");
+        }else {
+            return employeeEntitiesToEmployeeDtos(all);
+        }
     }
 
 

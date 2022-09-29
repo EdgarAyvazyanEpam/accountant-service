@@ -5,7 +5,8 @@ import com.accountant.service.accountant.csv.helper.CSVEmployeeHelper;
 import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.entity.UploadedFileEntity;
-import com.accountant.service.accountant.exception.CSVCurrencyFileDtosCreationException;
+import com.accountant.service.accountant.exception.currency.CSVCurrencyFileDtosCreationException;
+import com.accountant.service.accountant.exception.employee.CSVEmployeeFileDtosCreationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,14 @@ import java.util.List;
 public class CSVService {
     private static final Logger logger = LoggerFactory.getLogger(CSVService.class);
 
-    public List<EmployeeDTO> saveEmployee(MultipartFile file, UploadedFileEntity uploadedFileEntity) {
+    public List<EmployeeDTO> createEmployeeDtos(MultipartFile file, UploadedFileEntity uploadedFileEntity) {
         try {
             return CSVEmployeeHelper.csvToEmployees(file.getInputStream(), file.getOriginalFilename(),
                     uploadedFileEntity.getId());
         } catch (IOException e) {
-            throw new RuntimeException("fail to store csv data: " + e.getMessage());
+            String message = "Fail to create employee dtos";
+            logger.error(message, e);
+            throw new CSVEmployeeFileDtosCreationException(message);
         }
     }
 

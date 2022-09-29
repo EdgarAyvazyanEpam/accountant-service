@@ -2,7 +2,7 @@ package com.accountant.service.accountant.csv.helper;
 
 import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.enums.IsoCodeEnum;
-import com.accountant.service.accountant.exception.CSVCurrencyFileParseException;
+import com.accountant.service.accountant.exception.currency.CSVCurrencyFileParseException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;

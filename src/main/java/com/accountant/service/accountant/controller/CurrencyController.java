@@ -42,8 +42,8 @@ public class CurrencyController {
     @GetMapping("/currencies")
     public ResponseEntity<List<CurrencyDTO>> getAllCurrencies() {
 
-        List<CurrencyDTO> currencyEntities = currencyService.getAllCurrencies();
-        return new ResponseEntity<>(currencyEntities, HttpStatus.OK);
+        List<CurrencyDTO> currencies = currencyService.getAllCurrencies();
+        return new ResponseEntity<>(currencies, HttpStatus.OK);
 
     }
 }
