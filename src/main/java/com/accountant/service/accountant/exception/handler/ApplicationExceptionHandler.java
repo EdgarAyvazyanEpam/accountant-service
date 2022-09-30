@@ -1,6 +1,7 @@
 package com.accountant.service.accountant.exception.handler;
 
 import com.accountant.service.accountant.exception.FIleUploadBadRequestException;
+import com.accountant.service.accountant.exception.FileAlreadyExistException;
 import com.accountant.service.accountant.exception.currency.*;
 import com.accountant.service.accountant.exception.employee.CSVEmployeeFileDtosCreationException;
 import com.accountant.service.accountant.exception.employee.CSVEmployeeFileParseException;
@@ -70,6 +71,13 @@ public class ApplicationExceptionHandler {
     public ResponseEntity handleCurrencyNotFoundException(EmployeeNotFoundException ex) {
         logger.info("Employee data not found: " + ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+
+    @ExceptionHandler(value = {FileAlreadyExistException.class})
+    public ResponseEntity handleFileAlreadyExistsException(FileAlreadyExistException ex) {
+        logger.info("Employee data not found: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
 

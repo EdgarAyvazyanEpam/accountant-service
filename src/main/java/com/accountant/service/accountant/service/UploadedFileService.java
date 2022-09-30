@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 public class UploadedFileService implements UploadedService {
@@ -37,7 +38,7 @@ public class UploadedFileService implements UploadedService {
 
     @Override
     public Long deleteCurrencyFileById(Long id) {
-        Long isDeleted = uploadedFileRepository.deleteUploadedFileEntityById(id);
+        uploadedFileRepository.deleteUploadedFileEntityById(id);
         return currencyRepository.deleteByFileId(String.valueOf(id));
     }
 
@@ -45,5 +46,10 @@ public class UploadedFileService implements UploadedService {
     public Long deleteEmployeeFileById(Long id) {
         uploadedFileRepository.deleteUploadedFileEntityById(id);
         return employeeRepository.deleteByFileId(String.valueOf(id));
+    }
+
+    @Override
+    public Optional<UploadedFileEntity> finedFileByName(String name) {
+        return uploadedFileRepository.findByFileName(name);
     }
 }

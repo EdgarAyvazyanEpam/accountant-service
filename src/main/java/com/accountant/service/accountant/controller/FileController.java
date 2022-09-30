@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class FileController {
     private final UploadedService uploadedService;
 
-    public FileController(UploadedFileRepository uploadedFileRepository, UploadedService uploadedService) {
+    public FileController(UploadedService uploadedService) {
         this.uploadedService = uploadedService;
     }
 
@@ -28,8 +28,6 @@ public class FileController {
             message = "Could not delete the file by id: " + id + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
-//        message = "Please correct a csv file or file name and try again!";
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
 
     @DeleteMapping(value = "/delete-employee/")
@@ -44,7 +42,5 @@ public class FileController {
             message = "Could not delete the file by id: " + id + "!";
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
-//        message = "Please correct a csv file name and try again!";
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
 }
