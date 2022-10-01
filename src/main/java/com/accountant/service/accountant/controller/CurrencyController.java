@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @RestController
@@ -36,7 +35,7 @@ public class CurrencyController {
         if (uploadedFileService.finedFileByName(file.getOriginalFilename()).isPresent()) {
             logger.info("File: " + file.getOriginalFilename() + "already exists");
             throw new FileAlreadyExistException("File already exist in database");
-        }else {
+        } else {
             if (CSVCurrencyHelper.hasCSVFormat(file)) {
                 currencyService.saveCurrency(file);
                 logger.info("Uploaded the file successfully: " + file.getOriginalFilename());
@@ -54,6 +53,5 @@ public class CurrencyController {
 
         List<CurrencyDTO> currencies = currencyService.getAllCurrencies();
         return new ResponseEntity<>(currencies, HttpStatus.OK);
-
     }
 }

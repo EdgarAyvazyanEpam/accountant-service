@@ -7,7 +7,10 @@ import java.util.Optional;
 
 public interface UploadedService {
     UploadedFileEntity saveUploadedFile(MultipartFile file);
+
     Long deleteCurrencyFileById(Long id);
+
     Long deleteEmployeeFileById(Long id);
+
     Optional<UploadedFileEntity> finedFileByName(String name);
 }

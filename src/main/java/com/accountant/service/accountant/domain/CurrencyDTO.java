@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CurrencyDTO {
     private Long id;
-    private String currencyDate;
+    private LocalDateTime currencyDate;
     private String currencyDay;
     private String rate;
     private IsoCodeEnum isoCodeFrom;

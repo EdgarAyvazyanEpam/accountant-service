@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Table(name = "uploaded_file")
 public class UploadedFileEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "file_name")

@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-salary-table
+      author: Edgar
+      changes:
+        - createTable:
+            tableName: salary
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: employee_name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: salary
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency_date
+                  type: varchar(200)
+                  constraints:
+                    nullable: false

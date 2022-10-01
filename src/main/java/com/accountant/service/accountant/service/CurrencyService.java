@@ -9,9 +9,15 @@ import com.accountant.service.accountant.exception.currency.CurrencyNotFoundExce
 import com.accountant.service.accountant.repository.CurrencyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +37,7 @@ public class CurrencyService implements com.accountant.service.accountant.servic
 
     @Override
     public void saveCurrency(MultipartFile file) {
-        List<CurrencyDTO> currencyDTOS ;
+        List<CurrencyDTO> currencyDTOS;
         try {
             currencyDTOS = csvService.createCurrencyDtos(file, uploadedFileService.saveUploadedFile(file));
             currencyRepository.saveAll(currencyDtosToCurrencyEntities(currencyDTOS));
@@ -43,11 +49,31 @@ public class CurrencyService implements com.accountant.service.accountant.servic
     }
 
     @Override
+    public CurrencyEntity getCurrencyByDate(LocalDateTime localDateTime) {
+        return currencyRepository.getCurrencyEntityByCurrencyDate(localDateTime);
+    }
+
+    @Override
+    public CurrencyEntity getCurrencyByClosestDate(LocalDateTime localDateTime) {
+
+        Month month = localDateTime.getMonth();
+        int year = localDateTime.getYear();
+        LocalDateTime startOfMonth = LocalDateTime.of(year, month.getValue(), 01, 0, 0);
+        LocalDateTime endFfMonth = LocalDateTime.of(year, month.getValue(), 07, 0, 0);
+        Pageable paging = PageRequest.of(0, 1);
+        Page<CurrencyEntity> dd = currencyRepository.getCurrencyEntityByClosestDate(startOfMonth, endFfMonth, paging);
+        if (!dd.isEmpty() && !dd.getContent().isEmpty()) {
+            return dd.getContent().get(0);
+        }
+        return null;
+    }
+
+    @Override
     public List<CurrencyDTO> getAllCurrencies() {
         List<CurrencyEntity> all = currencyRepository.findAll();
         if (all.isEmpty()) {
             throw new CurrencyNotFoundException("No currency data");
-        }else {
+        } else {
             return currencyEntitiesToCurrencyDtos(all);
         }
     }
@@ -90,4 +116,7 @@ public class CurrencyService implements com.accountant.service.accountant.servic
         return dto;
     }
 
+    public CurrencyEntity getCurrencyById(Long id) {
+        return currencyRepository.getById(id);
+    }
 }

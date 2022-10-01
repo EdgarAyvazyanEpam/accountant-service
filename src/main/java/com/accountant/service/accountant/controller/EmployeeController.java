@@ -35,7 +35,7 @@ public class EmployeeController {
         if (uploadedFileService.finedFileByName(file.getOriginalFilename()).isPresent()) {
             logger.info("File: " + file.getOriginalFilename() + "already exists");
             throw new FileAlreadyExistException("File already exist in database");
-        }else {
+        } else {
             if (CSVEmployeeHelper.hasCSVFormat(file)) {
                 employeeService.saveEmployee(file);
                 logger.info("Uploaded the file successfully: " + file.getOriginalFilename());

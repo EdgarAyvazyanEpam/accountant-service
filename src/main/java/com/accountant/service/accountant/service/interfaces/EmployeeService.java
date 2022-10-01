@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface EmployeeService {
     void saveEmployee(MultipartFile file);
+
     List<EmployeeDTO> getAllEmployees();
 }

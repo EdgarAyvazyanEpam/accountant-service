@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "employee")
 public class EmployeeEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "full_name")

@@ -9,12 +9,12 @@ import java.time.LocalDateTime;
 @Table(name = "currency")
 public class CurrencyEntity {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
     @Column(name = "currency_date")
-    private String currencyDate;
+    private LocalDateTime currencyDate;
 
     @Column(name = "currency_day")
     private String currencyDay;
@@ -42,7 +42,7 @@ public class CurrencyEntity {
     public CurrencyEntity() {
     }
 
-    public CurrencyEntity(Long id, String currencyDate, String currencyDay, String rate,
+    public CurrencyEntity(Long id, LocalDateTime currencyDate, String currencyDay, String rate,
                           IsoCodeEnum isoCodeFrom, IsoCodeEnum isoCodeTo, LocalDateTime creationDate,
                           String fileName, String fileId) {
         this.id = id;
@@ -64,11 +64,11 @@ public class CurrencyEntity {
         this.id = id;
     }
 
-    public String getCurrencyDate() {
+    public LocalDateTime getCurrencyDate() {
         return currencyDate;
     }
 
-    public void setCurrencyDate(String currencyDate) {
+    public void setCurrencyDate(LocalDateTime currencyDate) {
         this.currencyDate = currencyDate;
     }
 

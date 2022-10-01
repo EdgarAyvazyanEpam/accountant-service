@@ -15,7 +15,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: currency_date
-                  type: varchar(200)
+                  type: DATETIME
                   constraints:
                     nullable: false
               - column:

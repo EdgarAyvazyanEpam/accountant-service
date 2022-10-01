@@ -30,8 +30,6 @@ public class CSVService {
         }
     }
 
-
-
     public List<CurrencyDTO> createCurrencyDtos(MultipartFile file, UploadedFileEntity uploadedFileEntity) {
         try {
             return CSVCurrencyHelper.csvToCurrencies(file.getInputStream(), file.getOriginalFilename(),
@@ -42,5 +40,4 @@ public class CSVService {
             throw new CSVCurrencyFileDtosCreationException(message);
         }
     }
-
 }

@@ -12,5 +12,6 @@ public interface UploadedFileRepository extends CrudRepository<UploadedFileEntit
 
     @Transactional
     Long deleteUploadedFileEntityById(Long id);
+
     Optional<UploadedFileEntity> findByFileName(String name);
 }

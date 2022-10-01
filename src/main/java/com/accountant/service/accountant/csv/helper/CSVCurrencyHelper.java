@@ -16,7 +16,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CSVCurrencyHelper {
     private static final Logger logger = LoggerFactory.getLogger(CSVCurrencyHelper.class);
@@ -39,7 +40,7 @@ public class CSVCurrencyHelper {
 
             for (CSVRecord csvRecord : csvRecords) {
                 CurrencyDTO currency = new CurrencyDTO(null,
-                        convertCurrencyDateToDBDate(csvRecord.get("Date")),
+                        LocalDateTime.parse(convertCurrencyDateToDBDate(csvRecord.get("Date"))),
                         convertCurrencyDateToDBDay(csvRecord.get("Date")),
                         csvRecord.get("Rate"),
                         IsoCodeEnum.valueOf(csvRecord.get("ISO Code From")),
@@ -64,7 +65,7 @@ public class CSVCurrencyHelper {
         int month = Integer.parseInt(splitDate[0]);
         int day = Integer.parseInt(splitDate[1]);
         int year = Integer.parseInt(splitDate[2]);
-        LocalDateTime localDateTime = LocalDateTime.of(year,month,day,0,0);
+        LocalDateTime localDateTime = LocalDateTime.of(year, month, day, 0, 0);
         return localDateTime.toString();
     }
 
