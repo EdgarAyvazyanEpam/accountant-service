@@ -1,4 +1,4 @@
-package com.accountant.service.accountant.exception;
+package com.accountant.service.accountant.exception.file;
 
 import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import org.springframework.http.HttpStatus;

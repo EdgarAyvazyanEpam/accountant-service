@@ -11,11 +11,12 @@
     <groupId>com.accountant.service</groupId>
     <artifactId>accountant</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>accountant</name>
     <description>Accounting service</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>1.8</java.version>
+        <spring.profiles.active>local,no-liquibase</spring.profiles.active>
     </properties>
     <dependencies>
         <dependency>
@@ -93,11 +94,6 @@
                         </exclude>
                     </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.12.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

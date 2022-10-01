@@ -1,5 +1,7 @@
 package com.accountant.service.accountant.service;
 
+import com.accountant.service.accountant.entity.CurrencyEntity;
+import com.accountant.service.accountant.entity.EmployeeEntity;
 import com.accountant.service.accountant.entity.UploadedFileEntity;
 import com.accountant.service.accountant.repository.CurrencyRepository;
 import com.accountant.service.accountant.repository.EmployeeRepository;
@@ -8,6 +10,7 @@ import com.accountant.service.accountant.service.interfaces.UploadedService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -37,19 +40,29 @@ public class UploadedFileService implements UploadedService {
     }
 
     @Override
-    public Long deleteCurrencyFileById(Long id) {
-        uploadedFileRepository.deleteUploadedFileEntityById(id);
+    public Optional<CurrencyEntity> deleteCurrencyFileById(Long id) throws FileNotFoundException {
+        Optional<UploadedFileEntity> uploadedFileEntity = uploadedFileRepository.deleteUploadedFileEntityById(id);
+        if (uploadedFileEntity.isEmpty()) {
+            throw new FileNotFoundException();
+        }
         return currencyRepository.deleteByFileId(String.valueOf(id));
     }
 
     @Override
-    public Long deleteEmployeeFileById(Long id) {
-        uploadedFileRepository.deleteUploadedFileEntityById(id);
+    public Optional<EmployeeEntity> deleteEmployeeFileById(Long id) throws FileNotFoundException {
+        Optional<UploadedFileEntity> uploadedFileEntity = uploadedFileRepository.deleteUploadedFileEntityById(id);
+        if (uploadedFileEntity.isEmpty()) {
+            throw new FileNotFoundException();
+        }
         return employeeRepository.deleteByFileId(String.valueOf(id));
     }
 
     @Override
-    public Optional<UploadedFileEntity> finedFileByName(String name) {
-        return uploadedFileRepository.findByFileName(name);
+    public Optional<UploadedFileEntity> finedFileByName(String name) throws FileNotFoundException {
+        Optional<UploadedFileEntity> byFileName = uploadedFileRepository.findByFileName(name);
+        if (byFileName.isEmpty()) {
+            throw new FileNotFoundException();
+        }
+        return byFileName;
     }
 }

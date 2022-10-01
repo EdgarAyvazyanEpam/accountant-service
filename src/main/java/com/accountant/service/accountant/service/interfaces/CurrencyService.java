@@ -6,13 +6,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface CurrencyService {
     void saveCurrency(MultipartFile file);
 
     List<CurrencyDTO> getAllCurrencies();
 
-    CurrencyEntity getCurrencyByDate(LocalDateTime localDateTime);
+    Optional<CurrencyEntity> getCurrencyByDate(LocalDateTime localDateTime);
 
-    CurrencyEntity getCurrencyByClosestDate(LocalDateTime localDateTime);
+    Optional<CurrencyEntity> getCurrencyByClosestDate(LocalDateTime localDateTime);
 }

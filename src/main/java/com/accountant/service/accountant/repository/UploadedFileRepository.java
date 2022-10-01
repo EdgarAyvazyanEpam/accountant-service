@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UploadedFileRepository extends CrudRepository<UploadedFileEntity, Integer> {
 
     @Transactional
-    Long deleteUploadedFileEntityById(Long id);
+    Optional<UploadedFileEntity> deleteUploadedFileEntityById(Long id);
 
     Optional<UploadedFileEntity> findByFileName(String name);
 }

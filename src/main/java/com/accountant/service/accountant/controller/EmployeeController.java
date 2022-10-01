@@ -3,8 +3,8 @@ package com.accountant.service.accountant.controller;
 import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import com.accountant.service.accountant.csv.helper.CSVEmployeeHelper;
 import com.accountant.service.accountant.domain.EmployeeDTO;
-import com.accountant.service.accountant.exception.FIleUploadBadRequestException;
-import com.accountant.service.accountant.exception.FileAlreadyExistException;
+import com.accountant.service.accountant.exception.file.FIleUploadBadRequestException;
+import com.accountant.service.accountant.exception.file.FileAlreadyExistException;
 import com.accountant.service.accountant.exception.handler.ApplicationExceptionHandler;
 import com.accountant.service.accountant.service.EmployeeService;
 import com.accountant.service.accountant.service.UploadedFileService;
@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -32,10 +33,13 @@ public class EmployeeController {
     @PostMapping("/upload-employee")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
 
-        if (uploadedFileService.finedFileByName(file.getOriginalFilename()).isPresent()) {
-            logger.info("File: " + file.getOriginalFilename() + "already exists");
-            throw new FileAlreadyExistException("File already exist in database");
-        } else {
+        try {
+            if (uploadedFileService.finedFileByName(file.getOriginalFilename()).isPresent()) {
+                logger.info("File: " + file.getOriginalFilename() + "already exists");
+                throw new FileAlreadyExistException("File already exist in database");
+            }
+        } catch (FileNotFoundException e) {
+            logger.info("Employee file not found in database");
             if (CSVEmployeeHelper.hasCSVFormat(file)) {
                 employeeService.saveEmployee(file);
                 logger.info("Uploaded the file successfully: " + file.getOriginalFilename());
@@ -46,6 +50,7 @@ public class EmployeeController {
                 throw new FIleUploadBadRequestException(message);
             }
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Employee file not found by name: " + file.getOriginalFilename() + "!"));
     }
 
     @GetMapping("/employees")

@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CurrencyService implements com.accountant.service.accountant.service.interfaces.CurrencyService {
@@ -49,12 +50,12 @@ public class CurrencyService implements com.accountant.service.accountant.servic
     }
 
     @Override
-    public CurrencyEntity getCurrencyByDate(LocalDateTime localDateTime) {
+    public Optional<CurrencyEntity> getCurrencyByDate(LocalDateTime localDateTime) {
         return currencyRepository.getCurrencyEntityByCurrencyDate(localDateTime);
     }
 
     @Override
-    public CurrencyEntity getCurrencyByClosestDate(LocalDateTime localDateTime) {
+    public Optional<CurrencyEntity> getCurrencyByClosestDate(LocalDateTime localDateTime) {
 
         Month month = localDateTime.getMonth();
         int year = localDateTime.getYear();
@@ -63,7 +64,7 @@ public class CurrencyService implements com.accountant.service.accountant.servic
         Pageable paging = PageRequest.of(0, 1);
         Page<CurrencyEntity> dd = currencyRepository.getCurrencyEntityByClosestDate(startOfMonth, endFfMonth, paging);
         if (!dd.isEmpty() && !dd.getContent().isEmpty()) {
-            return dd.getContent().get(0);
+            return Optional.ofNullable(dd.getContent().get(0));
         }
         return null;
     }

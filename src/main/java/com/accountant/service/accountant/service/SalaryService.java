@@ -1,21 +1,25 @@
 package com.accountant.service.accountant.service;
 
-import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.domain.SalaryDto;
 import com.accountant.service.accountant.entity.CurrencyEntity;
 import com.accountant.service.accountant.entity.SalaryEntity;
+import com.accountant.service.accountant.exception.salary.SalaryAlreadyCalculatedException;
+import com.accountant.service.accountant.exception.currency.NoCurrencyByDateException;
+import com.accountant.service.accountant.exception.handler.ApplicationExceptionHandler;
 import com.accountant.service.accountant.repository.SalaryRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 public class SalaryService implements com.accountant.service.accountant.service.interfaces.SalaryService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationExceptionHandler.class);
     private final EmployeeService employeeService;
     private final CurrencyService currencyService;
     private final SalaryRepository salaryRepository;
@@ -28,20 +32,26 @@ public class SalaryService implements com.accountant.service.accountant.service.
 
     public List<SalaryDto> calculateSalary(LocalDate localDate) {
         List<SalaryDto> salaryDtos = new ArrayList<>();
-        List<EmployeeDTO> allEmployees = employeeService.getAllEmployees();
-        CurrencyEntity currencyByDate = currencyService.getCurrencyByDate(localDate.atStartOfDay());
-        if (currencyByDate == null) {
-            currencyByDate = currencyService.getCurrencyByClosestDate(localDate.atStartOfDay());
-        }
-        if (currencyByDate == null) {
-            throw new RuntimeException();
-        }
+        if (salaryRepository.getSalaryEntityByCurrencyDate(localDate.atStartOfDay()).isPresent() ||
+                currencyService.getCurrencyByClosestDate(localDate.atStartOfDay()).isPresent()) {
+            logger.info("Salary calculated for this date:" + localDate);
+            throw new SalaryAlreadyCalculatedException();
+        } else {
+            List<EmployeeDTO> allEmployees = employeeService.getAllEmployees();
+            Optional<CurrencyEntity> currencyByDate = currencyService.getCurrencyByDate(localDate.atStartOfDay());
+            if (currencyByDate.isEmpty()) {
+                currencyByDate = currencyService.getCurrencyByClosestDate(localDate.atStartOfDay());
+            }
+            if (currencyByDate.isEmpty()) {
+                logger.info("No corresponding currency for date" + localDate);
+                throw new NoCurrencyByDateException("No corresponding currency for date" + localDate);
+            }
 
-        for (EmployeeDTO employeeDTOto : allEmployees) {
-            salaryDtos.add(new SalaryDto(null, employeeDTOto.getFullName(),
-                    usdToGelConverter(employeeDTOto.getSalary(), currencyByDate.getRate()), currencyByDate.getCurrencyDate()));
+            for (EmployeeDTO employeeDTOto : allEmployees) {
+                salaryDtos.add(new SalaryDto(null, employeeDTOto.getFullName(),
+                        usdToGelConverter(employeeDTOto.getSalary(), currencyByDate.get().getRate()), currencyByDate.get().getCurrencyDate()));
+            }
         }
-
         return salaryEntitiesToSalaryDtos(salaryRepository.saveAll(salaryDtosToSalaryEntities(salaryDtos)));
     }
 

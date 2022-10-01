@@ -19,7 +19,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: salary
+                  name: salary_gel
                   type: bigint
                   constraints:
                     nullable: false

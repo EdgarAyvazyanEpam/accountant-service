@@ -9,14 +9,15 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Repository
 public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long> {
     @Transactional
-    Long deleteByFileId(String id);
+    Optional<CurrencyEntity> deleteByFileId(String id);
 
     @Transactional
-    CurrencyEntity getCurrencyEntityByCurrencyDate(LocalDateTime currencyDate);
+    Optional<CurrencyEntity> getCurrencyEntityByCurrencyDate(LocalDateTime currencyDate);
 
     @Query("select c from CurrencyEntity c  where currencyDate <= :endDate and currencyDate > :startDate order by currencyDate desc ")
     Page<CurrencyEntity> getCurrencyEntityByClosestDate(LocalDateTime startDate, LocalDateTime endDate, Pageable limit);

@@ -3,8 +3,8 @@ package com.accountant.service.accountant.controller;
 import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import com.accountant.service.accountant.csv.helper.CSVCurrencyHelper;
 import com.accountant.service.accountant.domain.CurrencyDTO;
-import com.accountant.service.accountant.exception.FIleUploadBadRequestException;
-import com.accountant.service.accountant.exception.FileAlreadyExistException;
+import com.accountant.service.accountant.exception.file.FIleUploadBadRequestException;
+import com.accountant.service.accountant.exception.file.FileAlreadyExistException;
 import com.accountant.service.accountant.exception.handler.ApplicationExceptionHandler;
 import com.accountant.service.accountant.service.CurrencyService;
 import com.accountant.service.accountant.service.UploadedFileService;
@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
@@ -32,10 +34,13 @@ public class CurrencyController {
     @PostMapping("/upload-currency")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
 
-        if (uploadedFileService.finedFileByName(file.getOriginalFilename()).isPresent()) {
-            logger.info("File: " + file.getOriginalFilename() + "already exists");
-            throw new FileAlreadyExistException("File already exist in database");
-        } else {
+        try {
+            if (uploadedFileService.finedFileByName(file.getOriginalFilename()).isPresent()) {
+                logger.info("File: " + file.getOriginalFilename() + "already exists");
+                throw new FileAlreadyExistException("File already exist in database");
+            }
+        } catch (FileNotFoundException e) {
+            logger.info("Currency file not found in database");
             if (CSVCurrencyHelper.hasCSVFormat(file)) {
                 currencyService.saveCurrency(file);
                 logger.info("Uploaded the file successfully: " + file.getOriginalFilename());
@@ -46,6 +51,7 @@ public class CurrencyController {
                 throw new FIleUploadBadRequestException(message);
             }
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Currency file not found by name: " + file.getOriginalFilename() + "!"));
     }
 
     @GetMapping("/currencies")
