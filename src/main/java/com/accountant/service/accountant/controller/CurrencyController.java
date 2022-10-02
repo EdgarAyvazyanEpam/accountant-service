@@ -6,8 +6,8 @@ import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.exception.file.FIleUploadBadRequestException;
 import com.accountant.service.accountant.exception.file.FileAlreadyExistException;
 import com.accountant.service.accountant.exception.handler.ApplicationExceptionHandler;
-import com.accountant.service.accountant.service.CurrencyService;
-import com.accountant.service.accountant.service.UploadedFileService;
+import com.accountant.service.accountant.service.CurrencyServiceImpl;
+import com.accountant.service.accountant.service.UploadedFileServiceImpl;
 import com.accountant.service.accountant.service.interfaces.UploadedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,27 +22,27 @@ import java.util.List;
 @RestController
 @RequestMapping("api/csv")
 public class CurrencyController {
-    private final CurrencyService currencyService;
-    private final UploadedFileService uploadedFileService;
+    private final CurrencyServiceImpl currencyServiceImpl;
+    private final UploadedFileServiceImpl uploadedFileServiceImpl;
     private static final Logger logger = LoggerFactory.getLogger(ApplicationExceptionHandler.class);
 
-    public CurrencyController(CurrencyService currencyService, UploadedService uploadedService, UploadedFileService uploadedFileService) {
-        this.currencyService = currencyService;
-        this.uploadedFileService = uploadedFileService;
+    public CurrencyController(CurrencyServiceImpl currencyServiceImpl, UploadedService uploadedService, UploadedFileServiceImpl uploadedFileServiceImpl) {
+        this.currencyServiceImpl = currencyServiceImpl;
+        this.uploadedFileServiceImpl = uploadedFileServiceImpl;
     }
 
     @PostMapping("/upload-currency")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
 
         try {
-            if (uploadedFileService.finedFileByName(file.getOriginalFilename()).isPresent()) {
+            if (uploadedFileServiceImpl.finedFileByName(file.getOriginalFilename()).isPresent()) {
                 logger.info("File: " + file.getOriginalFilename() + "already exists");
                 throw new FileAlreadyExistException("File already exist in database");
             }
         } catch (FileNotFoundException e) {
             logger.info("Currency file not found in database");
             if (CSVCurrencyHelper.hasCSVFormat(file)) {
-                currencyService.saveCurrency(file);
+                currencyServiceImpl.saveCurrency(file);
                 logger.info("Uploaded the file successfully: " + file.getOriginalFilename());
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Uploaded the file successfully: "));
             } else {
@@ -51,13 +51,13 @@ public class CurrencyController {
                 throw new FIleUploadBadRequestException(message);
             }
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage("Currency file not found by name: " + file.getOriginalFilename() + "!"));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage("Please upload correct file"));
     }
 
     @GetMapping("/currencies")
     public ResponseEntity<List<CurrencyDTO>> getAllCurrencies() {
 
-        List<CurrencyDTO> currencies = currencyService.getAllCurrencies();
+        List<CurrencyDTO> currencies = currencyServiceImpl.getAllCurrencies();
         return new ResponseEntity<>(currencies, HttpStatus.OK);
     }
 }

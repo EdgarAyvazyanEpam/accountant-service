@@ -1,11 +1,14 @@
 package com.accountant.service.accountant.entity;
 
+import lombok.Builder;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "employee")
+@Builder
 public class EmployeeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

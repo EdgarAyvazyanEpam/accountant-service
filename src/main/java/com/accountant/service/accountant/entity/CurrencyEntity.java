@@ -1,12 +1,14 @@
 package com.accountant.service.accountant.entity;
 
 import com.accountant.service.accountant.enums.IsoCodeEnum;
+import lombok.Builder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "currency")
+@Builder
 public class CurrencyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

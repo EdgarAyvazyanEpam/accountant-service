@@ -1,10 +1,17 @@
 package com.accountant.service.accountant.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "uploaded_file")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UploadedFileEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +24,6 @@ public class UploadedFileEntity {
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
-    public UploadedFileEntity() {
-    }
-
-    public UploadedFileEntity(String fileName, String fileContent, LocalDateTime creationDate) {
-        this.fileName = fileName;
-        this.fileContent = fileContent;
-        this.creationDate = creationDate;
-    }
 
     public Long getId() {
         return id;

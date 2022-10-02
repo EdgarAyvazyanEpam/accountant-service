@@ -16,15 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class EmployeeService implements com.accountant.service.accountant.service.interfaces.EmployeeService {
+public class EmployeeServiceImpl implements com.accountant.service.accountant.service.interfaces.EmployeeService {
     private final CSVService csvService;
-    private final UploadedFileService uploadedFileService;
+    private final UploadedFileServiceImpl uploadedFileServiceImpl;
     private final EmployeeRepository employeeRepository;
-    private static final Logger logger = LoggerFactory.getLogger(EmployeeService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
-    public EmployeeService(CSVService csvService, UploadedFileService uploadedFileService, EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(CSVService csvService, UploadedFileServiceImpl uploadedFileServiceImpl, EmployeeRepository employeeRepository) {
         this.csvService = csvService;
-        this.uploadedFileService = uploadedFileService;
+        this.uploadedFileServiceImpl = uploadedFileServiceImpl;
         this.employeeRepository = employeeRepository;
     }
 
@@ -32,7 +32,7 @@ public class EmployeeService implements com.accountant.service.accountant.servic
     public void saveEmployee(MultipartFile file) {
         List<EmployeeDTO> employeeDTOS ;
         try {
-            employeeDTOS = csvService.createEmployeeDtos(file, uploadedFileService.saveUploadedFile(file));
+            employeeDTOS = csvService.createEmployeeDtos(file, uploadedFileServiceImpl.saveUploadedFile(file));
             employeeRepository.saveAll(employeeDtosToEmployeeEntities(employeeDTOS));
         } catch (CSVEmployeeFileParseException e) {
             String message = "Fail to store CSV file:";
@@ -52,7 +52,7 @@ public class EmployeeService implements com.accountant.service.accountant.servic
     }
 
 
-    private List<EmployeeEntity> employeeDtosToEmployeeEntities(List<EmployeeDTO> employeeDTOS) {
+    public List<EmployeeEntity> employeeDtosToEmployeeEntities(List<EmployeeDTO> employeeDTOS) {
         List<EmployeeEntity> employeeEntities = new ArrayList<>();
         for (EmployeeDTO dto : employeeDTOS) {
             employeeEntities.add(employeeDtoToEmployeeEntity(dto));
@@ -60,13 +60,13 @@ public class EmployeeService implements com.accountant.service.accountant.servic
         return employeeEntities;
     }
 
-    private EmployeeEntity employeeDtoToEmployeeEntity(EmployeeDTO dto) {
+    public EmployeeEntity employeeDtoToEmployeeEntity(EmployeeDTO dto) {
 
         return new EmployeeEntity(dto.getId(), dto.getFullName(),
                 dto.getSalary(), dto.getCreationDate(), dto.getFileName(), dto.getFileId());
     }
 
-    private List<EmployeeDTO> employeeEntitiesToEmployeeDtos(List<EmployeeEntity> entities) {
+    public List<EmployeeDTO> employeeEntitiesToEmployeeDtos(List<EmployeeEntity> entities) {
         List<EmployeeDTO> employeeDTOS = new ArrayList<>();
         for (EmployeeEntity entity : entities) {
             employeeDTOS.add(employeeEntityToEmployeeDto(entity));
@@ -74,7 +74,7 @@ public class EmployeeService implements com.accountant.service.accountant.servic
         return employeeDTOS;
     }
 
-    private EmployeeDTO employeeEntityToEmployeeDto(EmployeeEntity entity) {
+    public EmployeeDTO employeeEntityToEmployeeDto(EmployeeEntity entity) {
         EmployeeDTO dto = new EmployeeDTO();
         dto.setId(entity.getId());
         dto.setFullName(entity.getFullName());

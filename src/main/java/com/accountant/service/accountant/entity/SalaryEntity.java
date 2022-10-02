@@ -1,5 +1,6 @@
 package com.accountant.service.accountant.entity;
 
+import lombok.Builder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "salary")
+@Builder
 public class SalaryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

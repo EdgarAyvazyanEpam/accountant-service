@@ -17,13 +17,13 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-public class UploadedFileService implements UploadedService {
+public class UploadedFileServiceImpl implements UploadedService {
 
     private final UploadedFileRepository uploadedFileRepository;
     private final CurrencyRepository currencyRepository;
     private final EmployeeRepository employeeRepository;
 
-    public UploadedFileService(UploadedFileRepository uploadedFileRepository, UploadedFileRepository fileRepository, CurrencyRepository currencyRepository, EmployeeRepository employeeRepository) {
+    public UploadedFileServiceImpl(UploadedFileRepository uploadedFileRepository, UploadedFileRepository fileRepository, CurrencyRepository currencyRepository, EmployeeRepository employeeRepository) {
         this.uploadedFileRepository = uploadedFileRepository;
         this.currencyRepository = currencyRepository;
         this.employeeRepository = employeeRepository;
@@ -32,7 +32,7 @@ public class UploadedFileService implements UploadedService {
     @Override
     public UploadedFileEntity saveUploadedFile(MultipartFile file) {
         try {
-            UploadedFileEntity entity = new UploadedFileEntity(file.getOriginalFilename(), Arrays.toString(file.getBytes()), LocalDateTime.now());
+            UploadedFileEntity entity = new UploadedFileEntity(null, file.getOriginalFilename(), Arrays.toString(file.getBytes()), LocalDateTime.now());
             return uploadedFileRepository.save(entity);
         } catch (IOException e) {
             throw new RuntimeException("fail to store file data: " + e.getMessage());

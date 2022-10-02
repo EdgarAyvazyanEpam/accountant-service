@@ -17,30 +17,30 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Service
-public class SalaryService implements com.accountant.service.accountant.service.interfaces.SalaryService {
+public class SalaryServiceImpl implements com.accountant.service.accountant.service.interfaces.SalaryService {
 
     private static final Logger logger = LoggerFactory.getLogger(ApplicationExceptionHandler.class);
-    private final EmployeeService employeeService;
-    private final CurrencyService currencyService;
+    private final EmployeeServiceImpl employeeServiceImpl;
+    private final CurrencyServiceImpl currencyServiceImpl;
     private final SalaryRepository salaryRepository;
 
-    public SalaryService(EmployeeService employeeService, CurrencyService currencyService, SalaryRepository salaryRepository) {
-        this.employeeService = employeeService;
-        this.currencyService = currencyService;
+    public SalaryServiceImpl(EmployeeServiceImpl employeeServiceImpl, CurrencyServiceImpl currencyServiceImpl, SalaryRepository salaryRepository) {
+        this.employeeServiceImpl = employeeServiceImpl;
+        this.currencyServiceImpl = currencyServiceImpl;
         this.salaryRepository = salaryRepository;
     }
 
     public List<SalaryDto> calculateSalary(LocalDate localDate) {
         List<SalaryDto> salaryDtos = new ArrayList<>();
-        if (salaryRepository.getSalaryEntityByCurrencyDate(localDate.atStartOfDay()).isPresent() ||
-                currencyService.getCurrencyByClosestDate(localDate.atStartOfDay()).isPresent()) {
+        if (!salaryRepository.findAll().isEmpty() && (salaryRepository.getSalaryEntityByCurrencyDate(localDate.atStartOfDay()).isPresent() ||
+                currencyServiceImpl.getCurrencyByClosestDate(localDate.atStartOfDay()).isPresent())) {
             logger.info("Salary calculated for this date:" + localDate);
             throw new SalaryAlreadyCalculatedException();
         } else {
-            List<EmployeeDTO> allEmployees = employeeService.getAllEmployees();
-            Optional<CurrencyEntity> currencyByDate = currencyService.getCurrencyByDate(localDate.atStartOfDay());
+            List<EmployeeDTO> allEmployees = employeeServiceImpl.getAllEmployees();
+            Optional<CurrencyEntity> currencyByDate = currencyServiceImpl.getCurrencyByDate(localDate.atStartOfDay());
             if (currencyByDate.isEmpty()) {
-                currencyByDate = currencyService.getCurrencyByClosestDate(localDate.atStartOfDay());
+                currencyByDate = currencyServiceImpl.getCurrencyByClosestDate(localDate.atStartOfDay());
             }
             if (currencyByDate.isEmpty()) {
                 logger.info("No corresponding currency for date" + localDate);

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CurrencyService {
-    void saveCurrency(MultipartFile file);
+    List<CurrencyEntity> saveCurrency(MultipartFile file);
 
     List<CurrencyDTO> getAllCurrencies();
 
