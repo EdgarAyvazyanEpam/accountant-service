@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -74,10 +75,13 @@ public class SalaryServiceImpl implements com.accountant.service.accountant.serv
     private List<SalaryEntity> createMonthlySalary(LocalDate localDate, SalaryEnum salaryType) {
         List<SalaryDto> salaryDtos = new ArrayList<>();
         if (!salaryRepository.findAll().isEmpty()) {
-            if (salaryRepository.getSalaryEntityByCurrencyDate(localDate.atStartOfDay()).isPresent()) {
+            if (salaryRepository.getSalaryEntityByCurrencyDate
+                    (LocalDateTime.of
+                            (localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), 0,0))
+                    .isPresent()) {
                 logger.info("Salary calculated for this date:" + localDate);
                 throw new SalaryAlreadyCalculatedException("Salary calculated for this date:" + localDate.toString());
-            } else if (currencyService.getCurrencyByClosestDate(localDate.atStartOfDay()).isPresent() && currencyService.getCurrencyByClosestDate(localDate.atStartOfDay()).equals(localDate)) {
+            } else if (currencyService.getCurrencyByClosestDate(localDate.atStartOfDay()).isPresent() && currencyService.getCurrencyByClosestDate(localDate.atStartOfDay()).get().getCurrencyDate().equals(LocalDateTime.of(localDate.getYear(), localDate.getMonth(), localDate.getDayOfMonth(), 0,0))) {
                 logger.info("Salary calculated for this date:" + localDate);
                 throw new SalaryAlreadyCalculatedException("Salary calculated for this date:" + localDate.toString());
             }

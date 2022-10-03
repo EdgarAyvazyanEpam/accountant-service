@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface SalaryRepository extends JpaRepository<SalaryEntity, Long> {
     @Transactional
-    Optional<SalaryEntity> getSalaryEntityByCurrencyDate(LocalDateTime localDateTime);
+    Optional<List<SalaryEntity>> getSalaryEntityByCurrencyDate(LocalDateTime localDateTime);
 }
