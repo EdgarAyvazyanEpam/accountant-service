@@ -16,4 +16,6 @@ public interface UploadedService {
     Optional<EmployeeEntity> deleteEmployeeFileById(Long id) throws FileNotFoundException;
 
     Optional<UploadedFileEntity> finedFileByName(String name) throws FileNotFoundException;
+
+    void deleteFileById(Long id);
 }

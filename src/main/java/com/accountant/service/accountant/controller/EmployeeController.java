@@ -6,8 +6,8 @@ import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.exception.file.FIleUploadBadRequestException;
 import com.accountant.service.accountant.exception.file.FileAlreadyExistException;
 import com.accountant.service.accountant.exception.handler.ApplicationExceptionHandler;
-import com.accountant.service.accountant.service.EmployeeServiceImpl;
-import com.accountant.service.accountant.service.UploadedFileServiceImpl;
+import com.accountant.service.accountant.service.interfaces.EmployeeService;
+import com.accountant.service.accountant.service.interfaces.UploadedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,27 +21,27 @@ import java.util.List;
 @RestController
 @RequestMapping("api/csv")
 public class EmployeeController {
-    private final EmployeeServiceImpl employeeServiceImpl;
-    private final UploadedFileServiceImpl uploadedFileServiceImpl;
+    private final EmployeeService employeeService;
+    private final UploadedService uploadedService;
     private static final Logger logger = LoggerFactory.getLogger(ApplicationExceptionHandler.class);
 
-    public EmployeeController(EmployeeServiceImpl employeeServiceImpl, UploadedFileServiceImpl uploadedFileServiceImpl) {
-        this.employeeServiceImpl = employeeServiceImpl;
-        this.uploadedFileServiceImpl = uploadedFileServiceImpl;
+    public EmployeeController(EmployeeService employeeService, UploadedService uploadedService) {
+        this.employeeService = employeeService;
+        this.uploadedService = uploadedService;
     }
 
     @PostMapping("/upload-employee")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
 
         try {
-            if (uploadedFileServiceImpl.finedFileByName(file.getOriginalFilename()).isPresent()) {
+            if (uploadedService.finedFileByName(file.getOriginalFilename()).isPresent()) {
                 logger.info("File: " + file.getOriginalFilename() + "already exists");
                 throw new FileAlreadyExistException("File already exist in database");
             }
         } catch (FileNotFoundException e) {
             logger.info("Employee file not found in database");
             if (CSVEmployeeHelper.hasCSVFormat(file)) {
-                employeeServiceImpl.saveEmployee(file);
+                employeeService.saveEmployee(file);
                 logger.info("Uploaded the file successfully: " + file.getOriginalFilename());
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Uploaded the file successfully: "));
             } else {
@@ -55,7 +55,7 @@ public class EmployeeController {
 
     @GetMapping("/employees")
     public ResponseEntity<List<EmployeeDTO>> getAllEmployees() {
-        List<EmployeeDTO> employees = employeeServiceImpl.getAllEmployees();
+        List<EmployeeDTO> employees = employeeService.getAllEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 }

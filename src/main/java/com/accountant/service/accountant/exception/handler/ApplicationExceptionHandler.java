@@ -100,6 +100,12 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(value = {SalaryAlreadyCalculatedException.class})
     public ResponseEntity<ResponseMessage> handleSalaryAlreadyCalculatedException(SalaryAlreadyCalculatedException ex) {
         logger.info(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(ex.getMessage()));
+    }
+
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    public ResponseEntity<ResponseMessage> handleSalaryAlreadyCalculatedException(IllegalArgumentException ex) {
+        logger.info(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(ex.getMessage() + " Please check .csv file"));
     }
 }

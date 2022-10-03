@@ -9,6 +9,7 @@ import com.accountant.service.accountant.exception.currency.CSVCurrencyFileStore
 import com.accountant.service.accountant.exception.currency.CurrencyNotFoundException;
 import com.accountant.service.accountant.repository.CurrencyRepository;
 import com.accountant.service.accountant.service.helper.CurrencyHelper;
+import com.accountant.service.accountant.service.interfaces.UploadedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,14 +26,14 @@ import java.util.Optional;
 @Service
 public class CurrencyServiceImpl implements com.accountant.service.accountant.service.interfaces.CurrencyService {
     private final CSVService csvService;
-    private final UploadedFileServiceImpl uploadedFileServiceImpl;
+    private final UploadedService uploadedService;
     private final CurrencyRepository currencyRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(CurrencyServiceImpl.class);
 
-    public CurrencyServiceImpl(CSVService csvService, UploadedFileServiceImpl uploadedFileServiceImpl, CurrencyRepository currencyRepository) {
+    public CurrencyServiceImpl(CSVService csvService, UploadedService uploadedService, CurrencyRepository currencyRepository) {
         this.csvService = csvService;
-        this.uploadedFileServiceImpl = uploadedFileServiceImpl;
+        this.uploadedService = uploadedService;
         this.currencyRepository = currencyRepository;
     }
 
@@ -41,7 +42,7 @@ public class CurrencyServiceImpl implements com.accountant.service.accountant.se
         List<CurrencyEntity> currencyEntities;
         try {
             List<CurrencyDTO> currencyDTOS;
-            UploadedFileEntity entity = uploadedFileServiceImpl.saveUploadedFile(file);
+            UploadedFileEntity entity = uploadedService.saveUploadedFile(file);
             currencyDTOS = csvService.createCurrencyDtos(file, entity);
             currencyEntities = currencyRepository.saveAll(CurrencyHelper.currencyDtosToCurrencyEntities(currencyDTOS));
         } catch (CSVCurrencyFileParseException e) {

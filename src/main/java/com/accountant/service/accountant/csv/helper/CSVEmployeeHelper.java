@@ -49,10 +49,16 @@ public class CSVEmployeeHelper {
             }
 
             return employeeDTOS;
-        } catch (IOException | RuntimeException e) {
+        } catch (IOException e) {
             String message = "Fail to parse CSV file";
             logger.error(message, e);
             throw new CSVEmployeeFileParseException(message);
+        }catch (IllegalArgumentException e) {
+            logger.info("Failed to parse .csv file: incorrect arguments are passes");
+            throw  new IllegalArgumentException();
+        }catch (RuntimeException e) {
+            logger.error(e.getMessage());
+            throw new CSVEmployeeFileParseException(e.getMessage());
         }
     }
 }

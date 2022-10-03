@@ -7,6 +7,8 @@ import com.accountant.service.accountant.exception.employee.CSVEmployeeFileParse
 import com.accountant.service.accountant.exception.employee.CSVEmployeeFileStoreException;
 import com.accountant.service.accountant.exception.employee.EmployeeNotFoundException;
 import com.accountant.service.accountant.repository.EmployeeRepository;
+import com.accountant.service.accountant.repository.UploadedFileRepository;
+import com.accountant.service.accountant.service.interfaces.UploadedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,13 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements com.accountant.service.accountant.service.interfaces.EmployeeService {
     private final CSVService csvService;
-    private final UploadedFileServiceImpl uploadedFileServiceImpl;
+    private final UploadedService uploadedService;
     private final EmployeeRepository employeeRepository;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
-    public EmployeeServiceImpl(CSVService csvService, UploadedFileServiceImpl uploadedFileServiceImpl, EmployeeRepository employeeRepository) {
+        public EmployeeServiceImpl(CSVService csvService, UploadedService uploadedService, EmployeeRepository employeeRepository, UploadedFileRepository uploadedFileRepository) {
         this.csvService = csvService;
-        this.uploadedFileServiceImpl = uploadedFileServiceImpl;
+        this.uploadedService = uploadedService;
         this.employeeRepository = employeeRepository;
     }
 
@@ -32,7 +34,7 @@ public class EmployeeServiceImpl implements com.accountant.service.accountant.se
     public void saveEmployee(MultipartFile file) {
         List<EmployeeDTO> employeeDTOS ;
         try {
-            employeeDTOS = csvService.createEmployeeDtos(file, uploadedFileServiceImpl.saveUploadedFile(file));
+            employeeDTOS = csvService.createEmployeeDtos(file, uploadedService.saveUploadedFile(file));
             employeeRepository.saveAll(employeeDtosToEmployeeEntities(employeeDTOS));
         } catch (CSVEmployeeFileParseException e) {
             String message = "Fail to store CSV file:";

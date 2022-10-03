@@ -2,6 +2,7 @@ package com.accountant.service.accountant.controller;
 
 import com.accountant.service.accountant.domain.SalaryDto;
 import com.accountant.service.accountant.service.SalaryServiceImpl;
+import com.accountant.service.accountant.service.interfaces.SalaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,15 +18,15 @@ import java.util.List;
 @RequestMapping("api")
 public class SalaryController {
 
-    private final SalaryServiceImpl salaryServiceImpl;
+    private final SalaryService salaryService;
 
     public SalaryController(SalaryServiceImpl salaryServiceImpl) {
-        this.salaryServiceImpl = salaryServiceImpl;
+        this.salaryService = salaryServiceImpl;
     }
 
     @GetMapping("/calculate-salary")
     public ResponseEntity<List<SalaryDto>> calculateSalary(@RequestParam("localDate") String localDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return new ResponseEntity<>(salaryServiceImpl.calculateSalary(LocalDate.parse(localDate, formatter)), HttpStatus.OK);
+        return new ResponseEntity<>(salaryService.calculateSalary(LocalDate.parse(localDate, formatter)), HttpStatus.OK);
     }
 }

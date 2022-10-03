@@ -10,6 +10,7 @@ import com.accountant.service.accountant.service.interfaces.UploadedService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class UploadedFileServiceImpl implements UploadedService {
     }
 
     @Override
+    @Transactional
     public UploadedFileEntity saveUploadedFile(MultipartFile file) {
         try {
             UploadedFileEntity entity = new UploadedFileEntity(null, file.getOriginalFilename(), Arrays.toString(file.getBytes()), LocalDateTime.now());
@@ -64,5 +66,10 @@ public class UploadedFileServiceImpl implements UploadedService {
             throw new FileNotFoundException();
         }
         return byFileName;
+    }
+
+    @Override
+    public void deleteFileById(Long id) {
+        uploadedFileRepository.deleteUploadedFileEntityById(id);
     }
 }
