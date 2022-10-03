@@ -28,3 +28,8 @@ databaseChangeLog:
                   type: varchar(200)
                   constraints:
                     nullable: false
+              - column:
+                  name: salary_type
+                  type: varchar(200)
+                  constraints:
+                    nullable: false

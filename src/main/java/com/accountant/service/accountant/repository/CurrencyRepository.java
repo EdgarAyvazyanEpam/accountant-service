@@ -20,6 +20,6 @@ public interface CurrencyRepository extends JpaRepository<CurrencyEntity, Long> 
     Optional<CurrencyEntity> getCurrencyEntityByCurrencyDate(LocalDateTime currencyDate);
 
     @Transactional
-    @Query("select c from CurrencyEntity c  where currencyDate <= :endDate and currencyDate > :startDate order by currencyDate desc ")
+    @Query("select c from CurrencyEntity c  where currencyDate <= :endDate and currencyDate >= :startDate order by currencyDate desc ")
     Page<CurrencyEntity> getCurrencyEntityByClosestDate(LocalDateTime startDate, LocalDateTime endDate, Pageable limit);
 }

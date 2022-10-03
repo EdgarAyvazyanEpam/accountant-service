@@ -1,5 +1,6 @@
 package com.accountant.service.accountant.domain;
 
+import com.accountant.service.accountant.enums.SalaryEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class SalaryDto {
     private String employeeName;
     private BigDecimal salaryGEL;
     private LocalDateTime currencyDate;
+    private SalaryEnum salaryType;
 
 //    public SalaryDto(Long id, String employeeName, BigDecimal salaryGEL, LocalDateTime currencyDate) {
 //        this.id = id;

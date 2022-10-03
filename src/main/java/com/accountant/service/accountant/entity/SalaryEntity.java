@@ -1,5 +1,7 @@
 package com.accountant.service.accountant.entity;
 
+import com.accountant.service.accountant.enums.IsoCodeEnum;
+import com.accountant.service.accountant.enums.SalaryEnum;
 import lombok.Builder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,15 +24,19 @@ public class SalaryEntity {
     private BigDecimal salaryGEL;
     @Column(name = "currency_date")
     private LocalDateTime currencyDate;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "salary_type")
+    private SalaryEnum salaryYearlyOrMonthly;
 
     public SalaryEntity() {
     }
 
-    public SalaryEntity(Long id, String employeeName, BigDecimal salaryGEL, LocalDateTime currencyDate) {
+    public SalaryEntity(Long id, String employeeName, BigDecimal salaryGEL, LocalDateTime currencyDate, SalaryEnum salaryYearlyOrMonthly) {
         this.id = id;
         this.employeeName = employeeName;
         this.salaryGEL = salaryGEL;
         this.currencyDate = currencyDate;
+        this.salaryYearlyOrMonthly = salaryYearlyOrMonthly;
     }
 
     public Long getId() {
@@ -65,4 +71,11 @@ public class SalaryEntity {
         this.currencyDate = currencyDate;
     }
 
+    public SalaryEnum getSalaryYearlyOrMonthly() {
+        return salaryYearlyOrMonthly;
+    }
+
+    public void setSalaryYearlyOrMonthly(SalaryEnum salaryYearlyOrMonthly) {
+        this.salaryYearlyOrMonthly = salaryYearlyOrMonthly;
+    }
 }
