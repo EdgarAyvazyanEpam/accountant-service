@@ -6,10 +6,7 @@ import com.accountant.service.accountant.service.SalaryServiceImpl;
 import com.accountant.service.accountant.service.interfaces.SalaryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,9 +22,14 @@ public class SalaryYearlyController {
         this.salaryService = salaryServiceImpl;
     }
 
-    @GetMapping("/calculate-yearly-salary")
+    @PostMapping("/calculate-yearly-salary")
     public ResponseEntity<List<SalaryDto>> calculateSalary() {
         LocalDate startOfTheYear = LocalDate.of(LocalDate.now().getYear(),1,7);
         return new ResponseEntity<>(salaryService.calculateSalary(startOfTheYear, SalaryEnum.YEARLY), HttpStatus.OK);
+    }
+
+    @GetMapping("/yearly-salary")
+    public ResponseEntity<List<SalaryDto>> getYearlyCalculatedSalaries() {
+        return new ResponseEntity<>(salaryService.getSalariesForYear(), HttpStatus.OK);
     }
 }

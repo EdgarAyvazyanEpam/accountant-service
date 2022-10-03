@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface SalaryService {
     List<SalaryDto> calculateSalary(LocalDate localDate, SalaryEnum salaryType);
+    List<SalaryDto> getSalariesForMonth();
+    List<SalaryDto> getSalariesForYear();
 }

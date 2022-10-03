@@ -8,6 +8,7 @@ import com.accountant.service.accountant.enums.SalaryEnum;
 import com.accountant.service.accountant.exception.salary.SalaryAlreadyCalculatedException;
 import com.accountant.service.accountant.exception.currency.NoCurrencyByDateException;
 import com.accountant.service.accountant.exception.handler.ApplicationExceptionHandler;
+import com.accountant.service.accountant.exception.salary.SalaryNotFoundException;
 import com.accountant.service.accountant.repository.SalaryRepository;
 import com.accountant.service.accountant.service.interfaces.CurrencyService;
 import com.accountant.service.accountant.service.interfaces.EmployeeService;
@@ -48,7 +49,28 @@ public class SalaryServiceImpl implements com.accountant.service.accountant.serv
         return salaryEntitiesToSalaryDtos(entities);
     }
 
+    @Override
+    public List<SalaryDto> getSalariesForMonth() {
+        Optional<List<SalaryEntity>> salaryEntityByMonthly = salaryRepository.getSalaryEntityByMonthly();
+        if (salaryEntityByMonthly.isEmpty()) {
+            throw new SalaryNotFoundException("Cannot find salary for month");
+        }
+        return salaryEntityByMonthly.map(SalaryServiceImpl::salaryEntitiesToSalaryDtos).orElseGet(() -> salaryEntitiesToSalaryDtos(null));
+    }
+
+    @Override
+    public List<SalaryDto> getSalariesForYear() {
+        Optional<List<SalaryEntity>> salaryEntityByYearly = salaryRepository.getSalaryEntityByYearly();
+        if (salaryEntityByYearly.isEmpty()) {
+            throw new SalaryNotFoundException("Cannot find salary for year");
+        }
+        return salaryEntityByYearly.map(SalaryServiceImpl::salaryEntitiesToSalaryDtos).orElseGet(() -> salaryEntitiesToSalaryDtos(null));
+    }
+
     private static List<SalaryDto> salaryEntitiesToSalaryDtos(List<SalaryEntity> entities) {
+        if (entities == null) {
+            throw new SalaryNotFoundException("Salary not found");
+        }
         List<SalaryDto> dtos = new ArrayList<>();
         for (SalaryEntity entity : entities) {
             dtos.add(new SalaryDto(entity.getId(), entity.getEmployeeName(), entity.getSalaryGEL(), entity.getCurrencyDate(), entity.getSalaryYearlyOrMonthly()));

@@ -10,6 +10,7 @@ import com.accountant.service.accountant.exception.employee.CSVEmployeeFileDtosC
 import com.accountant.service.accountant.exception.employee.CSVEmployeeFileParseException;
 import com.accountant.service.accountant.exception.employee.CSVEmployeeFileStoreException;
 import com.accountant.service.accountant.exception.employee.EmployeeNotFoundException;
+import com.accountant.service.accountant.exception.salary.SalaryNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -104,8 +105,13 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
-    public ResponseEntity<ResponseMessage> handleSalaryAlreadyCalculatedException(IllegalArgumentException ex) {
+    public ResponseEntity<ResponseMessage> handleIllegalArgumentException(IllegalArgumentException ex) {
         logger.info(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(ex.getMessage() + " Please check .csv file"));
+    }
+    @ExceptionHandler(value = {SalaryNotFoundException.class})
+    public ResponseEntity<ResponseMessage> handleSalaryNotFoundException(SalaryNotFoundException ex) {
+        logger.info(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(ex.getMessage() + " Please check date"));
     }
 }

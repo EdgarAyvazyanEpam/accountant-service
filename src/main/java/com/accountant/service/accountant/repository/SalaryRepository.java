@@ -2,6 +2,7 @@ package com.accountant.service.accountant.repository;
 
 import com.accountant.service.accountant.entity.SalaryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -13,4 +14,10 @@ import java.util.Optional;
 public interface SalaryRepository extends JpaRepository<SalaryEntity, Long> {
     @Transactional
     Optional<List<SalaryEntity>> getSalaryEntityByCurrencyDate(LocalDateTime localDateTime);
+
+    @Query("select s from SalaryEntity s where s.salaryYearlyOrMonthly = 'MONTHLY'")
+    Optional<List<SalaryEntity>> getSalaryEntityByMonthly();
+
+    @Query("select s from SalaryEntity s where s.salaryYearlyOrMonthly = 'YEARLY'")
+    Optional<List<SalaryEntity>> getSalaryEntityByYearly();
 }
