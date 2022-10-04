@@ -1,6 +1,5 @@
 package com.accountant.service.accountant.controller;
 
-import com.accountant.service.accountant.csv.csvservice.csvmessage.ResponseMessage;
 import com.accountant.service.accountant.domain.SalaryDto;
 import com.accountant.service.accountant.enums.SalaryEnum;
 import com.accountant.service.accountant.service.SalaryServiceImpl;
@@ -15,23 +14,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api")
-public class SalaryController {
+public class SalaryMonthlyController {
 
     private final SalaryService salaryService;
 
-    public SalaryController(SalaryServiceImpl salaryServiceImpl) {
+    public SalaryMonthlyController(SalaryServiceImpl salaryServiceImpl) {
         this.salaryService = salaryServiceImpl;
     }
 
-    @PostMapping("/calculate-monthly-salary")
-    public ResponseEntity<ResponseMessage> calculateSalary(@RequestParam("localDate") String localDate) {
+    @GetMapping("/calculate-monthly-salary")
+    public ResponseEntity<List<SalaryDto>> calculateSalary(@RequestParam("localDate") String localDate) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        salaryService.calculateSalary(LocalDate.parse(localDate, formatter), SalaryEnum.MONTHLY);
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Monthly salary calculated: for date" + localDate.toString()));
-    }
-
-    @GetMapping("/monthly-salary")
-    public ResponseEntity<List<SalaryDto>> getMonthlyCalculatedSalaries() {
-        return new ResponseEntity<>(salaryService.getSalariesForMonth(), HttpStatus.OK);
+        return new ResponseEntity<>(salaryService.calculateSalary(LocalDate.parse(localDate, formatter), SalaryEnum.MONTHLY), HttpStatus.OK);
     }
 }
