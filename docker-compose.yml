@@ -7,36 +7,8 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: accountant
+      MYSQL_ROOT_USERNAME: root
       MYSQL_ROOT_PASSWORD: Root1
-      MYSQL_ALLOW_EMPTY_PASSWORD: null
       SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/accountant
-      MYSQL_RANDOM_ROOT_PASSWORD: Root1
     ports:
       - "3307:3306"
-#  app:
-#    image: app:latest
-#    ports:
-#      - "8091:8091"
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/accountant?autoReconnect=true&useSSL=false
-#    depends_on:
-#      - mysql
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    links:
-      - mysql:db
-    ports:
-      - "8081:80"
-  bookapp:
-    build: ./
-    restart: on-failure
-    ports:
-      - "8080:8080"
-    environment:
-      - WAIT_HOSTS=mysql:3307
-  liquibase:
-    build: .
-    image: ubuntu-jdk8-liquibase:latest
-    depends_on:
-      - mysql
-    network_mode: "host"
