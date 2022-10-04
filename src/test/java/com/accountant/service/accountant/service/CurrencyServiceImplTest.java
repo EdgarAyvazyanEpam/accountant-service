@@ -3,6 +3,7 @@ package com.accountant.service.accountant.service;
 import com.accountant.service.accountant.csv.csvservice.CSVService;
 import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.entity.CurrencyEntity;
+import com.accountant.service.accountant.entity.UploadedFileEntity;
 import com.accountant.service.accountant.enums.IsoCodeEnum;
 import com.accountant.service.accountant.repository.CurrencyRepository;
 import com.accountant.service.accountant.service.helper.CurrencyHelper;
@@ -39,6 +40,11 @@ public class CurrencyServiceImplTest {
 
     @Mock
     private CurrencyRepository currencyRepository;
+    @Mock
+    private CSVService csvService;
+
+    @Mock
+    private UploadedService uploadedService;
 
     @InjectMocks
     private CurrencyServiceImpl currencyService;
@@ -64,9 +70,11 @@ public class CurrencyServiceImplTest {
         List<CurrencyDTO> currencyDTOList = List.of(getSampleCurrencyDto());
         MultipartFile result = new MockMultipartFile("file.csv", new byte[]{});
         List<CurrencyEntity> currencyEntityList = CurrencyHelper.dtosToEntities(currencyDTOList);
+        UploadedFileEntity uploadedFileEntity = new UploadedFileEntity(1L,"file.csv","file content",LocalDateTime.now());
 
-        when(currencyRepository.saveAll(any()))
-                .thenReturn(currencyEntityList);
+        when(currencyRepository.saveAll(any())).thenReturn(currencyEntityList);
+        when(uploadedService.saveUploadedFile(result)).thenReturn(uploadedFileEntity);
+        when(csvService.createCurrencyDtos(result,uploadedFileEntity)).thenReturn(currencyDTOList);
         List<CurrencyEntity> currencyEntities = currencyService.saveCurrency(result);
         assertEquals(currencyEntities, currencyEntityList);
     }
