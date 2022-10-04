@@ -69,7 +69,7 @@ public class UploadedFileServiceImpl implements UploadedService {
     }
 
     @Override
-    public void deleteFileById(Long id) {
-        uploadedFileRepository.deleteUploadedFileEntityById(id);
+    public Optional<UploadedFileEntity> deleteFileById(Long id) {
+        return uploadedFileRepository.deleteUploadedFileEntityById(id);
     }
 }
