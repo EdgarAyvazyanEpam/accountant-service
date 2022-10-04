@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CurrencyHelper {
-    public static List<CurrencyEntity> currencyDtosToCurrencyEntities(List<CurrencyDTO> currencyDTOS) {
+    public static List<CurrencyEntity> dtosToEntities(List<CurrencyDTO> currencyDTOS) {
         List<CurrencyEntity> currencyEntities = new ArrayList<>();
         for (CurrencyDTO dto : currencyDTOS) {
             currencyEntities.add(currencyDtoToCurrencyEntity(dto));

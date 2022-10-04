@@ -1,10 +1,7 @@
 package com.accountant.service.accountant.domain;
 
 import com.accountant.service.accountant.enums.SalaryEnum;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -17,7 +14,7 @@ import java.util.Comparator;
 public class SalaryDto {
     private String employeeName;
     private BigDecimal salaryGEL;
-    private LocalDateTime currencyDate;
+    private String currencyDate;
     private SalaryEnum salaryType;
 
 }

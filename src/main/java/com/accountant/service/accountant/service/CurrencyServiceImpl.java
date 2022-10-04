@@ -44,7 +44,7 @@ public class CurrencyServiceImpl implements com.accountant.service.accountant.se
             List<CurrencyDTO> currencyDTOS;
             UploadedFileEntity entity = uploadedService.saveUploadedFile(file);
             currencyDTOS = csvService.createCurrencyDtos(file, entity);
-            currencyEntities = currencyRepository.saveAll(CurrencyHelper.currencyDtosToCurrencyEntities(currencyDTOS));
+            currencyEntities = currencyRepository.saveAll(CurrencyHelper.dtosToEntities(currencyDTOS));
         } catch (CSVCurrencyFileParseException e) {
             String message = "Fail to store CSV file:";
             logger.error(message, e);
@@ -83,7 +83,4 @@ public class CurrencyServiceImpl implements com.accountant.service.accountant.se
         }
     }
 
-    public CurrencyEntity getCurrencyById(Long id) {
-        return currencyRepository.getById(id);
-    }
 }

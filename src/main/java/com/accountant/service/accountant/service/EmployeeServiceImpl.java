@@ -1,6 +1,6 @@
 package com.accountant.service.accountant.service;
 
-import com.accountant.service.accountant.csv.csvservice.CSVService;
+import com.accountant.service.accountant.csv.csvservice.CSVServiceImpl;
 import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.entity.EmployeeEntity;
 import com.accountant.service.accountant.exception.employee.CSVEmployeeFileParseException;
@@ -19,13 +19,13 @@ import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements com.accountant.service.accountant.service.interfaces.EmployeeService {
-    private final CSVService csvService;
+    private final CSVServiceImpl csvServiceImpl;
     private final UploadedService uploadedService;
     private final EmployeeRepository employeeRepository;
     private static final Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
-        public EmployeeServiceImpl(CSVService csvService, UploadedService uploadedService, EmployeeRepository employeeRepository, UploadedFileRepository uploadedFileRepository) {
-        this.csvService = csvService;
+        public EmployeeServiceImpl(CSVServiceImpl csvServiceImpl, UploadedService uploadedService, EmployeeRepository employeeRepository, UploadedFileRepository uploadedFileRepository) {
+        this.csvServiceImpl = csvServiceImpl;
         this.uploadedService = uploadedService;
         this.employeeRepository = employeeRepository;
     }
@@ -34,7 +34,7 @@ public class EmployeeServiceImpl implements com.accountant.service.accountant.se
     public void saveEmployee(MultipartFile file) {
         List<EmployeeDTO> employeeDTOS ;
         try {
-            employeeDTOS = csvService.createEmployeeDtos(file, uploadedService.saveUploadedFile(file));
+            employeeDTOS = csvServiceImpl.createEmployeeDtos(file, uploadedService.saveUploadedFile(file));
             employeeRepository.saveAll(employeeDtosToEmployeeEntities(employeeDTOS));
         } catch (CSVEmployeeFileParseException e) {
             String message = "Fail to store CSV file:";

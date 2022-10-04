@@ -50,7 +50,7 @@ public class SalaryServiceImpl implements com.accountant.service.accountant.serv
         List<SalaryDto> salaryDtos = new ArrayList<>();
         List<EmployeeDTO> allEmployees = employeeService.getAllEmployees();
         Optional<CurrencyEntity> currencyByDate = currencyService.getCurrencyByDate(localDate.atStartOfDay());
-        if (currencyByDate.isEmpty()) {
+        if (currencyByDate.isEmpty() || currencyByDate.get().getCurrencyDate().getDayOfMonth() < 7) {
             currencyByDate = currencyService.getCurrencyByClosestDate(localDate.atStartOfDay());
         }
         if (currencyByDate.isEmpty()) {
@@ -62,7 +62,7 @@ public class SalaryServiceImpl implements com.accountant.service.accountant.serv
             salaryDtos.add(SalaryDto.builder()
                             .employeeName(employeeDTOto.getFullName())
                             .salaryGEL(usdToGelConverter(employeeDTOto.getSalary(), currencyByDate.get().getRate()))
-                                    .currencyDate(currencyByDate.get().getCurrencyDate())
+                                    .currencyDate(currencyByDate.get().getCurrencyDate().toString())
                                             .salaryType(salaryType)
                                                     .build());
         }
