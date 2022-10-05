@@ -40,12 +40,12 @@ public class CSVCurrencyHelper {
 
             for (CSVRecord csvRecord : csvRecords) {
                 CurrencyDTO currency = new CurrencyDTO(null,
-                        LocalDateTime.parse(convertCurrencyDateToDBDate(csvRecord.get("Date"))),
+                        String.valueOf(LocalDateTime.parse(convertCurrencyDateToDBDate(csvRecord.get("Date")))),
                         convertCurrencyDateToDBDay(csvRecord.get("Date")),
                         csvRecord.get("Rate"),
                         IsoCodeEnum.valueOf(csvRecord.get("ISO Code From")),
                         IsoCodeEnum.valueOf(csvRecord.get("ISO Code To")),
-                        LocalDateTime.now(), fileName, String.valueOf(uploadedFileId)
+                        String.valueOf(LocalDateTime.now()), fileName, String.valueOf(uploadedFileId)
                 );
 
                 currencyDTOS.add(currency);

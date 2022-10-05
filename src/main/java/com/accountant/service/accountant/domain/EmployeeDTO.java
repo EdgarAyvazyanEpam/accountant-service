@@ -14,7 +14,7 @@ public class EmployeeDTO {
     private Long id;
     private String fullName;
     private BigDecimal salary;
-    private LocalDateTime creationDate;
+    private String creationDate;
     private String fileName;
     private String fileId;
 }

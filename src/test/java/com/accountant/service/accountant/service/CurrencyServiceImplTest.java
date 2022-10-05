@@ -80,8 +80,8 @@ public class CurrencyServiceImplTest {
     }
 
     private CurrencyDTO getSampleCurrencyDto() {
-        return new CurrencyDTO(1L, LocalDateTime.now(), "Monday", "2.945", IsoCodeEnum.USD,
-                IsoCodeEnum.GEL, LocalDateTime.now(), "HistoryExchangeReport.csv", "1");
+        return new CurrencyDTO(1L, String.valueOf(LocalDateTime.now()), "Monday", "2.945", IsoCodeEnum.USD,
+                IsoCodeEnum.GEL, String.valueOf(LocalDateTime.now()), "HistoryExchangeReport.csv", "1");
     }
 
     @Test

@@ -114,4 +114,9 @@ public class ApplicationExceptionHandler {
         logger.info(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ResponseMessage(ex.getMessage() + " Please check date"));
     }
+    @ExceptionHandler(value = {FileUploadedException.class})
+    public ResponseEntity<ResponseMessage> fileUploadedExceptionException(FileUploadedException ex) {
+        logger.info(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(ex.getMessage() + " Cannot save file"));
+    }
 }

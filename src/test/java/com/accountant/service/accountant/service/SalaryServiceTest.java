@@ -49,7 +49,7 @@ public class SalaryServiceTest {
 
     @BeforeEach
     public void setUp() {
-        employeeDTO = new EmployeeDTO(1L,"John Smith",new BigDecimal(1200),LocalDateTime.now(),"File.csv","1");
+        employeeDTO = new EmployeeDTO(1L,"John Smith",new BigDecimal(1200),String.valueOf(LocalDateTime.now()),"File.csv","1");
         currencyEntity = CurrencyEntity.builder()
                 .id(1L)
                 .currencyDate(LocalDateTime.of(2022, 5, 7, 0, 0))
@@ -69,7 +69,7 @@ public class SalaryServiceTest {
         List<SalaryDto> salaryDtos = List.of(new SalaryDto("John Smith", new BigDecimal(1200).multiply(new BigDecimal(currencyEntity.getRate())), LocalDateTime.of(2022,5,7,0,0).toString(),SalaryEnum.MONTHLY));
         when(employeeService.getAllEmployees()).thenReturn(all);
         when(currencyService.getCurrencyByDate(any())).thenReturn(Optional.ofNullable(currencyEntity));
-        List<SalaryDto> calculateSalary = salaryService.calculateSalary(employeeDTO.getCreationDate().toLocalDate(), SalaryEnum.MONTHLY);
+        List<SalaryDto> calculateSalary = salaryService.calculateSalary(LocalDate.parse(employeeDTO.getCreationDate()), SalaryEnum.MONTHLY);
         assertEquals(calculateSalary,salaryDtos);
 
     }
@@ -80,7 +80,7 @@ public class SalaryServiceTest {
         List<SalaryDto> salaryDtos = List.of(new SalaryDto("John Smith", new BigDecimal(1200).multiply(new BigDecimal(currencyEntity.getRate())), LocalDateTime.of(2022,5,7,0,0).toString(),SalaryEnum.YEARLY));
         when(employeeService.getAllEmployees()).thenReturn(all);
         when(currencyService.getCurrencyByDate(any())).thenReturn(Optional.ofNullable(currencyEntity));
-        List<SalaryDto> calculateSalary = salaryService.calculateSalary(employeeDTO.getCreationDate().toLocalDate(), SalaryEnum.YEARLY);
+        List<SalaryDto> calculateSalary = salaryService.calculateSalary(LocalDate.parse(employeeDTO.getCreationDate()), SalaryEnum.YEARLY);
         assertEquals(calculateSalary.get(0),salaryDtos.get(0));
 
     }

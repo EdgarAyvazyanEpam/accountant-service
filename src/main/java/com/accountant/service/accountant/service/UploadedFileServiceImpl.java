@@ -3,6 +3,8 @@ package com.accountant.service.accountant.service;
 import com.accountant.service.accountant.entity.CurrencyEntity;
 import com.accountant.service.accountant.entity.EmployeeEntity;
 import com.accountant.service.accountant.entity.UploadedFileEntity;
+import com.accountant.service.accountant.exception.currency.FileUploadedException;
+import com.accountant.service.accountant.exception.file.FIleUploadBadRequestException;
 import com.accountant.service.accountant.repository.CurrencyRepository;
 import com.accountant.service.accountant.repository.EmployeeRepository;
 import com.accountant.service.accountant.repository.UploadedFileRepository;
@@ -37,7 +39,9 @@ public class UploadedFileServiceImpl implements UploadedService {
             UploadedFileEntity entity = new UploadedFileEntity(null, file.getOriginalFilename(), Arrays.toString(file.getBytes()), LocalDateTime.now());
             return uploadedFileRepository.save(entity);
         } catch (IOException e) {
-            throw new RuntimeException("fail to store file data: " + e.getMessage());
+            throw new FIleUploadBadRequestException("fail to store file data: " + e.getMessage());
+        }catch (IllegalArgumentException e) {
+            throw new FileUploadedException(e.getMessage());
         }
     }
 

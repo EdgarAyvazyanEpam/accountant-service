@@ -3,6 +3,7 @@ package com.accountant.service.accountant.service.helper;
 import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.entity.EmployeeEntity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class EmployeeHelper {
     public static EmployeeEntity employeeDtoToEmployeeEntity(EmployeeDTO dto) {
 
         return new EmployeeEntity(dto.getId(), dto.getFullName(),
-                dto.getSalary(), dto.getCreationDate(), dto.getFileName(), dto.getFileId());
+                dto.getSalary(), LocalDateTime.parse(dto.getCreationDate()), dto.getFileName(), dto.getFileId());
     }
 
     public static List<EmployeeDTO> employeeEntitiesToEmployeeDtos(List<EmployeeEntity> entities) {
@@ -35,7 +36,7 @@ public class EmployeeHelper {
         dto.setId(entity.getId());
         dto.setFullName(entity.getFullName());
         dto.setSalary(entity.getSalary());
-        dto.setCreationDate(entity.getCreationDate());
+        dto.setCreationDate(String.valueOf(entity.getCreationDate()));
         dto.setFileName(entity.getFileName());
         dto.setFileId(entity.getFileId());
 

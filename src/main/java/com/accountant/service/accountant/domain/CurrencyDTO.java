@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CurrencyDTO {
     private Long id;
-    private LocalDateTime currencyDate;
+    private String currencyDate;
     private String currencyDay;
     private String rate;
     private IsoCodeEnum isoCodeFrom;
     private IsoCodeEnum isoCodeTo;
-    private LocalDateTime creationDate;
+    private String creationDate;
     private String fileName;
     private String fileId;
 }

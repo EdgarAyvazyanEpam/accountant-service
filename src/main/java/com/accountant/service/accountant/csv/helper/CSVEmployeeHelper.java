@@ -42,7 +42,7 @@ public class CSVEmployeeHelper {
                 EmployeeDTO dto = new EmployeeDTO(null,
                         csvRecord.get("Employee"),
                         BigDecimal.valueOf(Long.parseLong(csvRecord.get("Salary"))),
-                        LocalDateTime.now(), fileName, String.valueOf(uploadedFileId)
+                        String.valueOf(LocalDateTime.now()), fileName, String.valueOf(uploadedFileId)
                 );
 
                 employeeDTOS.add(dto);

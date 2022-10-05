@@ -3,6 +3,7 @@ package com.accountant.service.accountant.service.helper;
 import com.accountant.service.accountant.domain.CurrencyDTO;
 import com.accountant.service.accountant.entity.CurrencyEntity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,8 @@ public class CurrencyHelper {
 
     public static CurrencyEntity currencyDtoToCurrencyEntity(CurrencyDTO dto) {
 
-        return new CurrencyEntity(dto.getId(), dto.getCurrencyDate(), dto.getCurrencyDay(),
-                dto.getRate(), dto.getIsoCodeFrom(), dto.getIsoCodeTo(), dto.getCreationDate(),
+        return new CurrencyEntity(dto.getId(), LocalDateTime.parse(dto.getCurrencyDate()), dto.getCurrencyDay(),
+                dto.getRate(), dto.getIsoCodeFrom(), dto.getIsoCodeTo(), LocalDateTime.parse(dto.getCreationDate()),
                 dto.getFileName(), dto.getFileId());
     }
 
@@ -33,12 +34,12 @@ public class CurrencyHelper {
     public static CurrencyDTO currencyEntityToCurrencyDto(CurrencyEntity entity) {
         CurrencyDTO dto = new CurrencyDTO();
         dto.setId(entity.getId());
-        dto.setCurrencyDate(entity.getCurrencyDate());
+        dto.setCurrencyDate(String.valueOf(entity.getCurrencyDate()));
         dto.setCurrencyDay(entity.getCurrencyDay());
         dto.setRate(entity.getRate());
         dto.setIsoCodeFrom(entity.getIsoCodeFrom());
         dto.setIsoCodeTo(entity.getIsoCodeTo());
-        dto.setCreationDate(entity.getCreationDate());
+        dto.setCreationDate(String.valueOf(entity.getCreationDate()));
         dto.setFileName(entity.getFileName());
         dto.setFileId(entity.getFileId());
 

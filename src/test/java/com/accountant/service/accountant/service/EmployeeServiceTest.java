@@ -84,7 +84,7 @@ public class EmployeeServiceTest {
 
     private EmployeeDTO getSampleEmployeeDto() {
         return new EmployeeDTO(1L,"John Smith",
-                new BigDecimal(1200),LocalDateTime.now(),"file.csv","1");
+                new BigDecimal(1200),String.valueOf(LocalDateTime.now()),"file.csv","1");
     }
 
     @Test
