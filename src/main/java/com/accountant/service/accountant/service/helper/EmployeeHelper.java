@@ -2,11 +2,13 @@ package com.accountant.service.accountant.service.helper;
 
 import com.accountant.service.accountant.domain.EmployeeDTO;
 import com.accountant.service.accountant.entity.EmployeeEntity;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@ComponentScan
 public class EmployeeHelper {
 
     public static List<EmployeeEntity> employeeDtosToEmployeeEntities(List<EmployeeDTO> employeeDTOS) {

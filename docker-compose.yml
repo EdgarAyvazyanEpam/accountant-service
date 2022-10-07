@@ -1,14 +1,32 @@
-version: '3'
-
+version: '3.7'
 services:
-  mysql:
-    image: mysql:latest
-    hostname: localhost
-    restart: always
+  accountant_db:
+    container_name: accountant_db
+    image: mysql:8.0
     environment:
-      MYSQL_DATABASE: accountant
-      MYSQL_ROOT_USERNAME: root
-      MYSQL_ROOT_PASSWORD: Root1
-      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/accountant
+      - MYSQL_USER=root_user
+      - MYSQL_PASSWORD=Root1
+      - MYSQL_DATABASE=accountant
+      - MYSQL_ROOT_PASSWORD=Root1
+    volumes:
+      - dbvol:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "3306:3306"
+    restart: always
+  app:
+    build:
+      context: .
+    container_name: accountant_aervice_app
+    image: accounting-service:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - accountant_db
+    environment:
+      - MYSQL_HOST=accountant_db
+      - MYSQL_USERNAME=root_user
+      - MYSQL_PASSWORD=Root1
+      - MYSQL_DATABASE=accountant
+      - MYSQL_PORT=3306
+volumes:
+  dbvol:
